@@ -1,0 +1,12 @@
+GO 
+USE SP_HR
+
+GO
+CREATE TABLE MaritalStatuses(
+[Id] INT IDENTITY PRIMARY KEY,
+[Type] NVARCHAR (50) UNIQUE NOT NULL 
+)
+
+GO
+INSERT INTO StateWorkTypes VALUES (N'Evli')
+INSERT INTO StateWorkTypes VALUES (N'Subay')

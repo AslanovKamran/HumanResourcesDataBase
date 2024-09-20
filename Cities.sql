@@ -1,0 +1,40 @@
+GO
+USE SP_HR
+
+GO
+CREATE TABLE Cities
+(
+[Id] INT PRIMARY KEY,
+[CountryId] INT FOREIGN KEY REFERENCES Countries(Id),
+[Name] NVARCHAR(100) NOT NULL UNIQUE
+)
+
+--GO
+--SELECT * INTO Temp 
+--FROM Cities;
+
+--DROP TABLE Cities
+
+--GO
+--CREATE TABLE Cities
+--(
+--[Id] INT PRIMARY KEY IDENTITY (644,1),
+--[CountryId] INT FOREIGN KEY REFERENCES Countries(Id),
+--[Name] NVARCHAR(100) NOT NULL UNIQUE
+--)
+
+--SET IDENTITY_INSERT Cities ON
+
+
+--INSERT INTO Cities(
+--    [Id], [CountryId], [Name]
+--)
+--SELECT * FROM Temp;
+
+
+--SET IDENTITY_INSERT Cities OFF
+
+--DROP TABLE Temp
+
+
+SELECT * FROM Cities ORDER BY Id DESC

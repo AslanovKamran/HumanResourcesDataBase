@@ -1,0 +1,11 @@
+﻿GO
+USE SP_HR
+
+GO 
+CREATE TABLE DiplomaTypes(
+[Id] INT PRIMARY KEY Identity,
+[Type] NVARCHAR (50) UNIQUE NOT NULL
+)
+
+INSERT INTO DiplomaTypes VALUES (N'Adi')
+INSERT INTO DiplomaTypes VALUES (N'Fərqlənmə')

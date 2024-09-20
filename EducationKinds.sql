@@ -1,0 +1,14 @@
+﻿
+GO
+USE SP_HR
+
+GO
+CREATE TABLE EducationKinds(
+[Id] INT PRIMARY KEY IDENTITY,
+[Kind] NVARCHAR (50) NOT NULL UNIQUE
+)
+
+
+INSERT INTO EducationKinds VALUES (N'Əyani') 
+INSERT INTO EducationKinds VALUES (N'Axşam') 
+INSERT INTO EducationKinds VALUES (N'Qiyabi')
