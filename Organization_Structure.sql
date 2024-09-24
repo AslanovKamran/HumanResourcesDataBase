@@ -183,16 +183,14 @@
 --[Code] ,
 --[Name] ,
 --[BeginningHistory] ,
---[ParentId] ,
---[FullName] ,
---[FirstNumber] ,
+--[Canceled],
+--[FirstNumber],
 --[SecondNumber],
+--[IsSeaCoef] 
 --[TabelOrganizationId],
 --[TabelPriority] ,
---[Canceled],
 --[HeadName] ,
---[HeadPosition],
---[IsSeaCoef] 
+--[HeadPosition]
 --FROM OrganizationStructures
 --WHERE Id = @Id
 --END
@@ -341,5 +339,3 @@
 ----ADD CONSTRAINT FK_StateTables_OrganizationStructures
 ----FOREIGN KEY (OrganizationStructureId) REFERENCES OrganizationStructures(Id);
 
-
---DELETE FROM OrganizationStructures WHERE Id = 753 
