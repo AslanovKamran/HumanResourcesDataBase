@@ -35,9 +35,9 @@
 --WHERE ParentId NOT IN (SELECT Id FROM OrganizationStructures);
 
 
-ALTER TABLE OrganizationStructures
-ADD CONSTRAINT FK_OrganizationStructures_ParentId
-FOREIGN KEY (ParentId) REFERENCES OrganizationStructures(Id);
+--ALTER TABLE OrganizationStructures
+--ADD CONSTRAINT FK_OrganizationStructures_ParentId
+--FOREIGN KEY (ParentId) REFERENCES OrganizationStructures(Id);
 
 --UPDATE OrganizationStructures SET IsSeaCoef = 0 WHERE IsSeaCoef IS NULL
 
@@ -342,4 +342,4 @@ FOREIGN KEY (ParentId) REFERENCES OrganizationStructures(Id);
 ----FOREIGN KEY (OrganizationStructureId) REFERENCES OrganizationStructures(Id);
 
 
---DELETE FROM OrganizationStructures WHERE Id >= 780
+--DELETE FROM OrganizationStructures WHERE Id = 753 
