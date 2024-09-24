@@ -1,8 +1,10 @@
 ﻿--GO
 --USE SP_HR
 
+
+
 --GO
---Create TABLE OrganizationStructures(
+--CREATE TABLE OrganizationStructures(
 --[Id] INT PRIMARY KEY,
 --[Code] NVARCHAR(10),
 --[Name] NVARCHAR (100),
@@ -11,7 +13,7 @@
 --[FullName] NVARCHAR (255),
 --[FirstNumber] NVARCHAR (20),
 --[SecondNumber] NVARCHAR (20),
---[TabelOrganization] INT,
+--[TabelOrganizationId] INT FOREIGN KEY REFERENCES TabelOrganizations(Id),
 --[TabelPriority] INT,
 --[Canceled] BIT,
 --[OrderId] INT,
@@ -22,7 +24,6 @@
 
 
   
-
 --SELECT *
 --FROM OrganizationStructures
 --WHERE ParentId IS NOT NULL
@@ -34,9 +35,11 @@
 --WHERE ParentId NOT IN (SELECT Id FROM OrganizationStructures);
 
 
---ALTER TABLE OrganizationStructures
---ADD CONSTRAINT FK_OrganizationStructures_ParentId
---FOREIGN KEY (ParentId) REFERENCES OrganizationStructures(Id);
+ALTER TABLE OrganizationStructures
+ADD CONSTRAINT FK_OrganizationStructures_ParentId
+FOREIGN KEY (ParentId) REFERENCES OrganizationStructures(Id);
+
+--UPDATE OrganizationStructures SET IsSeaCoef = 0 WHERE IsSeaCoef IS NULL
 
 
 --CREATE TABLE OrganizationStructuresTemp (
@@ -48,7 +51,7 @@
 --    [FullName] NVARCHAR (255),
 --    [FirstNumber] NVARCHAR (20),
 --    [SecondNumber] NVARCHAR (20),
---    [TabelOrganization] INT,
+--    [TabelOrganizationId] INT FOREIGN KEY REFERENCES TabelOrganizations(Id),
 --    [TabelPriority] INT,
 --    [Canceled] BIT,
 --    [OrderId] INT,
@@ -57,11 +60,11 @@
 --    [IsSeaCoef] BIT
 --);
 
---INSERT INTO OrganizationStructuresTemp (Id, Code, Name, BeginningHistory, ParentId, FullName, FirstNumber, SecondNumber, TabelOrganization, TabelPriority, Canceled, OrderId, HeadName, HeadPosition, IsSeaCoef)
---SELECT Id, Code, Name, BeginningHistory, ParentId, FullName, FirstNumber, SecondNumber, TabelOrganization, TabelPriority, Canceled, OrderId, HeadName, HeadPosition, IsSeaCoef
+--INSERT INTO OrganizationStructuresTemp (Id, Code, Name, BeginningHistory, ParentId, FullName, FirstNumber, SecondNumber, TabelOrganizationId, TabelPriority, Canceled, OrderId, HeadName, HeadPosition, IsSeaCoef)
+--SELECT Id, Code, Name, BeginningHistory, ParentId, FullName, FirstNumber, SecondNumber, TabelOrganizationId, TabelPriority, Canceled, OrderId, HeadName, HeadPosition, IsSeaCoef
 --FROM OrganizationStructures;
 
-
+--SELECT * FROM OrganizationStructuresTemp ORDER BY Id DESC -- The last Id is 779
 
 --DROP TABLE OrganizationStructures;
 
@@ -75,7 +78,7 @@
 --    [FullName] NVARCHAR (255),
 --    [FirstNumber] NVARCHAR (20),
 --    [SecondNumber] NVARCHAR (20),
---    [TabelOrganization] INT,
+--    [TabelOrganizationId] INT FOREIGN KEY REFERENCES TabelOrganizations(Id),
 --    [TabelPriority] INT,
 --    [Canceled] BIT,
 --    [OrderId] INT,
@@ -87,8 +90,8 @@
 --SET IDENTITY_INSERT OrganizationStructures ON;
 
 
---INSERT INTO OrganizationStructures (Id, Code, Name, BeginningHistory, ParentId, FullName, FirstNumber, SecondNumber, TabelOrganization, TabelPriority, Canceled, OrderId, HeadName, HeadPosition, IsSeaCoef)
---SELECT Id, Code, Name, BeginningHistory, ParentId, FullName, FirstNumber, SecondNumber, TabelOrganization, TabelPriority, Canceled, OrderId, HeadName, HeadPosition, IsSeaCoef
+--INSERT INTO OrganizationStructures (Id, Code, Name, BeginningHistory, ParentId, FullName, FirstNumber, SecondNumber, TabelOrganizationId, TabelPriority, Canceled, OrderId, HeadName, HeadPosition, IsSeaCoef)
+--SELECT Id, Code, Name, BeginningHistory, ParentId, FullName, FirstNumber, SecondNumber, TabelOrganizationId, TabelPriority, Canceled, OrderId, HeadName, HeadPosition, IsSeaCoef
 --FROM OrganizationStructuresTemp;
 
 --SET IDENTITY_INSERT OrganizationStructures OFF;
@@ -138,7 +141,7 @@
 --    INNER JOIN RecursiveCTE rcte ON os.Id = rcte.Id;
 --END;
 
---SELECT * FROM OrganizationStructures
+--SELECT * FROM OrganizationStructures ORDER BY Id DESC
 
 --GO
 --CREATE PROC OrganizationStructures_GetOrganizationStructures 
@@ -152,6 +155,7 @@
 --[Canceled]
 --FROM OrganizationStructures ORDER BY ParentId, Id
 --END
+
 
 
 --GO
@@ -169,15 +173,9 @@
 --ORDER BY ParentId, Id
 --END
 
---EXEC sp_rename 'OrganizationStructures.TabelOrganization', 'TabelOrganizationId', 'COLUMN';
-
---ALTER TABLE OrganizationStructures
---ADD CONSTRAINT FK_OrganizationStructures_TabelOrganizations FOREIGN KEY (TabelOrganizationId) 
---REFERENCES TabelOrganizations(Id);
-
 
 --GO
---CREATE PROC GetOrganizationStructureById @Id INT
+--CREATE PROC GetOrganizationStructureById @Id  INT
 --AS
 --BEGIN
 --SELECT 
@@ -261,10 +259,87 @@
 --ALTER TABLE OrganizationStructures
 --ADD CONSTRAINT [DF_OrganizationStructures_Canceled] DEFAULT 0 FOR Canceled;
 
+--ALTER TABLE OrganizationStructures
+--ADD CONSTRAINT [DF_OrganizationStructures_IsSeaCoef] DEFAULT 0 FOR IsSeaCoef;
+
 
 --SELECT * FROM OrganizationStructures ORDER BY Id Desc
 
-DELETE FROM OrganizationStructures WHERE Id>=780
+--DELETE FROM OrganizationStructures WHERE Id>=780
+
+--GO
+--CREATE PROC UpdateOrganizationStructure 
+--@Id INT,
+--@Code NVARCHAR(10),
+--@Name NVARCHAR (100),
+--@BeginningHistory DATE,
+--@FirstNumber NVARCHAR (20),
+--@SecondNumber NVARCHAR (20),
+--@TabelOrganizationId INT,
+--@TabelPriority INT,
+--@Canceled BIT,
+--@HeadName NVARCHAR (200),
+--@HeadPosition NVARCHAR (200),
+--@IsSeaCoef BIT
+--AS
+--BEGIN
+--    BEGIN TRY
+--        -- Start a transaction
+--        BEGIN TRANSACTION;
+
+--        -- Perform the update
+--        UPDATE OrganizationStructures
+--        SET 
+--            [Code] = @Code,
+--            [Name] = @Name,
+--            [BeginningHistory] = @BeginningHistory,
+--            [FirstNumber] = @FirstNumber,
+--            [SecondNumber] = @SecondNumber,
+--            [TabelOrganizationId] = @TabelOrganizationId,
+--            [TabelPriority] = @TabelPriority,
+--            [Canceled] = @Canceled,
+--            [HeadName] = @HeadName,
+--            [HeadPosition] = @HeadPosition,
+--            [IsSeaCoef] = @IsSeaCoef
+--        WHERE [Id] = @Id;
+
+--        -- Retrieve and return the updated data
+--        SELECT 
+--            [Id],
+--            [Code],
+--            [Name],
+--            [BeginningHistory],
+--            [FirstNumber],
+--            [SecondNumber],
+--            [TabelOrganizationId],
+--            [TabelPriority],
+--            [Canceled],
+--            [HeadName],
+--            [HeadPosition],
+--            [IsSeaCoef]
+--        FROM OrganizationStructures
+--        WHERE [Id] = @Id;
+
+--        -- Commit the transaction if successful
+--        COMMIT TRANSACTION;
+--    END TRY
+--    BEGIN CATCH
+--        -- Rollback transaction if an error occurs
+--        IF @@TRANCOUNT > 0
+--        BEGIN
+--            ROLLBACK TRANSACTION;
+--        END
+
+--        -- Return the error message to the client
+--        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
+--        RAISERROR(@ErrorMessage, 16, 1);
+--    END CATCH
+--END
 
 
+----ALTER TABLE StateTables
+----ADD CONSTRAINT FK_StateTables_OrganizationStructures
+----FOREIGN KEY (OrganizationStructureId) REFERENCES OrganizationStructures(Id);
 
+
+--DELETE FROM OrganizationStructures WHERE Id >= 780
