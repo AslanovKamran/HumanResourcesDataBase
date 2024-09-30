@@ -67,7 +67,6 @@
 --);
 
 
-SELECT * FROM StateTables
 
 --SET IDENTITY_INSERT StateTables ON;
 
@@ -84,22 +83,13 @@ SELECT * FROM StateTables
 
 --CREATE INDEX IX_StateTables_Name ON StateTables ([Name]);
 
-ALTER TABLE StateTables
-ADD CONSTRAINT [FK_StateTables_StateWorkTypes] FOREIGN KEY (WorkTypeId)
-REFERENCES [StateWorkTypes] (Id);
+--ALTER TABLE StateTables
+--ADD CONSTRAINT [FK_StateTables_StateWorkTypes] FOREIGN KEY (WorkTypeId)
+--REFERENCES [StateWorkTypes] (Id);
 
 
 
-
-
-
-
-
-
-
-
-
-------Data needed to display
+----Data needed to display
 --SELECT 
 --OS.FullName, 
 --st.Name, 
@@ -117,12 +107,16 @@ REFERENCES [StateWorkTypes] (Id);
 --st.WorkHoursSaturday,
 --st.TabelPriority,
 --st.TabelPosition,
---st.IsCanceled 
+--st.IsCanceled,
+--st.ExcludeBankomat
 --FROM StateTables AS ST
 --LEFT JOIN OrganizationStructures AS OS ON ST.OrganizationStructureId = OS.Id
 --LEFT JOIN StateWorkTypes AS SWT ON ST.WorkTypeId = SWT.Id
---WHERE OS.Id = 384
+--WHERE st.ExcludeBankomat IS NOT NULL
 --ORDER BY st.Degree DESC
+
+
+
 
 
 --CREATE PROCEDURE GetStateTablesWithCount
@@ -152,25 +146,214 @@ REFERENCES [StateWorkTypes] (Id);
 --END;
 
 
-// NOT CREATED
-GO
-CREATE PROCEDURE GetStateTablesByOrganizationId
-    @OrganizationId INT,      
-    @ShowOnlyActive BIT = 1   
-AS
-BEGIN
-    SELECT 
-        st.*, 
-        os.*, 
-        swt.*
-    FROM StateTables AS st
-    LEFT JOIN OrganizationStructures AS os 
-        ON st.OrganizationStructureId = os.Id
-    LEFT JOIN StateWorkTypes AS swt 
-        ON st.WorkTypeId = swt.Id
-    WHERE st.OrganizationStructureId = @OrganizationId
-    AND (@ShowOnlyActive = 0 OR st.IsCanceled = 0);  -- Conditionally filter by IsCanceled
-END;
+
+--GO
+--CREATE PROCEDURE GetStateTablesByOrganizationId
+--    @OrganizationId INT,      
+--    @ShowOnlyActive BIT = 1   
+--AS
+--BEGIN
+--    SELECT 
+--        st.*, 
+--        os.*, 
+--        swt.*
+--    FROM StateTables AS st
+--    LEFT JOIN OrganizationStructures AS os 
+--        ON st.OrganizationStructureId = os.Id
+--    LEFT JOIN StateWorkTypes AS swt 
+--        ON st.WorkTypeId = swt.Id
+--    WHERE st.OrganizationStructureId = @OrganizationId
+--    AND (@ShowOnlyActive = 0 OR st.IsCanceled = 0);  -- Conditionally filter by IsCanceled
+--END;
+
+
+
+--GO
+--CREATE PROCEDURE UpdateStateTable
+--    @Id INT,
+--    @Name NVARCHAR(100),
+--    @Degree INT,
+--    @UnitCount INT,
+--    @MonthlySalaryFrom INT,
+--    @HourlySalary DECIMAL(9,2),
+--    @MonthlySalaryExtra INT,
+--    @OccupiedPostCount INT,
+--    @DocumentNumber NVARCHAR(100),
+--    @DocumentDate DATE,
+--    @WorkTypeId INT,
+--    @OrganizationStructureId INT,
+--    @HarmfulnessCoefficient INT,
+--    @WorkHours INT,
+--	@WorkingHoursSpecial NVARCHAR(100),
+--    @WorkHoursSaturday INT,
+--    @TabelPriority INT,
+--    @TabelPosition INT,
+--    @IsCanceled BIT
+--AS
+--BEGIN
+--    -- Start a transaction
+--    BEGIN TRY
+--        BEGIN TRANSACTION;
+
+--        -- Check if the WorkTypeId exists in the StateWorkTypes table
+--        IF NOT EXISTS (SELECT 1 FROM StateWorkTypes WHERE Id = @WorkTypeId)
+--        BEGIN
+--            THROW 50000, 'Invalid Foreign Key: No matching StateWorkType found.', 1;
+--        END
+
+--        -- Check if the OrganizationStructureId exists in the OrganizationStructures table
+--        IF NOT EXISTS (SELECT 1 FROM OrganizationStructures WHERE Id = @OrganizationStructureId)
+--        BEGIN
+--            THROW 50001, 'Invalid Foreign Key: No OrganizationStructure found.', 1;
+--        END
+
+--        -- Update the StateTable record
+--        UPDATE StateTables
+--        SET 
+--            Name = @Name,
+--            Degree = @Degree,
+--            UnitCount = @UnitCount,
+--            MonthlySalaryFrom = @MonthlySalaryFrom,
+--            HourlySalary = @HourlySalary,
+--            MonthlySalaryExtra = @MonthlySalaryExtra,
+--            OccupiedPostCount = @OccupiedPostCount,
+--            DocumentNumber = @DocumentNumber,
+--            DocumentDate = @DocumentDate,
+--            WorkTypeId = @WorkTypeId,
+--            OrganizationStructureId = @OrganizationStructureId,  -- New field added here
+--            HarmfulnessCoefficient = @HarmfulnessCoefficient,
+--            WorkHours = @WorkHours,
+--			WorkingHoursSpecial = @WorkingHoursSpecial,
+--            WorkHoursSaturday = @WorkHoursSaturday,
+--            TabelPriority = @TabelPriority,
+--            TabelPosition = @TabelPosition,
+--            IsCanceled = @IsCanceled
+--        WHERE Id = @Id;
+
+--        -- Commit the transaction if everything is successful
+--        COMMIT TRANSACTION;
+--    END TRY
+--    BEGIN CATCH
+--        -- Rollback the transaction in case of an error
+--        IF @@TRANCOUNT > 0
+--        BEGIN
+--            ROLLBACK TRANSACTION;
+--        END
+
+--        -- Rethrow the error
+--        DECLARE @ErrorMessage NVARCHAR(4000), @ErrorSeverity INT, @ErrorState INT;
+--        SELECT @ErrorMessage = ERROR_MESSAGE(), @ErrorSeverity = ERROR_SEVERITY(), @ErrorState = ERROR_STATE();
+--        RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+--    END CATCH
+--END;
+
+
+
+--GO
+--CREATE PROCEDURE AddStateTable
+--    @Name NVARCHAR(100),
+--    @UnitCount INT,
+--    @MonthlySalaryFrom INT,
+--    @MonthlySalaryTo INT,
+--    @OccupiedPostCount INT,
+--    @DocumentNumber NVARCHAR(100),
+--    @DocumentDate DATE,
+--    @OrganizationStructureId INT,
+--    @WorkTypeId INT,
+--    @WorkHours INT,
+--    @WorkHoursSaturday INT,
+--    @TabelPosition INT,
+--    @TabelPriority INT,
+--    @ExcludeBankomat INT,
+--    @Degree INT,
+--    @HourlySalary DECIMAL(9,2),
+--    @IsCanceled BIT,
+--    @WorkingHoursSpecial NVARCHAR(100),
+--    @MonthlySalaryExtra INT,
+--    @HarmfulnessCoefficient INT
+--AS
+--BEGIN
+--    BEGIN TRY
+--        -- Start the transaction
+--        BEGIN TRANSACTION;
+
+--        -- Check if OrganizationStructureId exists
+--        IF NOT EXISTS (SELECT 1 FROM OrganizationStructures WHERE Id = @OrganizationStructureId)
+--        BEGIN
+--            THROW 50001, 'Invalid OrganizationStructureId', 1;
+--        END
+
+--        -- Check if WorkTypeId exists
+--        IF NOT EXISTS (SELECT 1 FROM StateWorkTypes WHERE Id = @WorkTypeId)
+--        BEGIN
+--            THROW 50002, 'Invalid WorkTypeId', 1;
+--        END
+
+--        -- Insert new StateTable
+--        INSERT INTO StateTables
+--        (
+--            [Name],
+--            [UnitCount],
+--            [MonthlySalaryFrom],
+--            [MonthlySalaryTo],
+--            [OccupiedPostCount],
+--            [DocumentNumber],
+--            [DocumentDate],
+--            [OrganizationStructureId],
+--            [WorkTypeId],
+--            [WorkHours],
+--            [WorkHoursSaturday],
+--            [TabelPosition],
+--            [TabelPriority],
+--            [ExcludeBankomat],
+--            [Degree],
+--            [HourlySalary],
+--            [IsCanceled],
+--            [WorkingHoursSpecial],
+--            [MonthlySalaryExtra],
+--            [HarmfulnessCoefficient]
+--        )
+--        VALUES
+--        (
+--            @Name,
+--            @UnitCount,
+--            @MonthlySalaryFrom,
+--            @MonthlySalaryTo,
+--            @OccupiedPostCount,
+--            @DocumentNumber,
+--            @DocumentDate,
+--            @OrganizationStructureId,
+--            @WorkTypeId,
+--            @WorkHours,
+--            @WorkHoursSaturday,
+--            @TabelPosition,
+--            @TabelPriority,
+--            @ExcludeBankomat,
+--            @Degree,
+--            @HourlySalary,
+--            @IsCanceled,
+--            @WorkingHoursSpecial,
+--            @MonthlySalaryExtra,
+--            @HarmfulnessCoefficient
+--        );
+
+--        -- Commit the transaction if successful
+--        COMMIT TRANSACTION;
+--    END TRY
+--    BEGIN CATCH
+--        -- Rollback the transaction in case of error
+--        IF @@TRANCOUNT > 0
+--        BEGIN
+--            ROLLBACK TRANSACTION;
+--        END;
+
+--        -- Throw the original error (with proper semicolon before THROW)
+--        THROW;
+--    END CATCH
+--END
+
+
+
 
 
 
