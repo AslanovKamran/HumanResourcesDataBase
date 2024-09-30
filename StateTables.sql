@@ -1,4 +1,4 @@
---GO
+﻿--GO
 --USE SP_HR
 
 --GO 
@@ -67,6 +67,8 @@
 --);
 
 
+SELECT * FROM StateTables
+
 --SET IDENTITY_INSERT StateTables ON;
 
 --INSERT INTO StateTables (
@@ -82,30 +84,93 @@
 
 --CREATE INDEX IX_StateTables_Name ON StateTables ([Name]);
 
---GO 
---CREATE PROC GetStateTablesDemo -- Not created
+ALTER TABLE StateTables
+ADD CONSTRAINT [FK_StateTables_StateWorkTypes] FOREIGN KEY (WorkTypeId)
+REFERENCES [StateWorkTypes] (Id);
+
+
+
+
+
+
+
+
+
+
+
+
+------Data needed to display
+--SELECT 
+--OS.FullName, 
+--st.Name, 
+--st.Degree, 
+--st.UnitCount, 
+--st.MonthlySalaryFrom, 
+--st.HourlySalary, 
+--st.MonthlySalaryExtra,
+--st.OccupiedPostCount, 
+--st.DocumentNumber, 
+--st.DocumentDate,
+--SWT.Type,
+--st.HarmfulnessCoefficient,
+--st.WorkHours,
+--st.WorkHoursSaturday,
+--st.TabelPriority,
+--st.TabelPosition,
+--st.IsCanceled 
+--FROM StateTables AS ST
+--LEFT JOIN OrganizationStructures AS OS ON ST.OrganizationStructureId = OS.Id
+--LEFT JOIN StateWorkTypes AS SWT ON ST.WorkTypeId = SWT.Id
+--WHERE OS.Id = 384
+--ORDER BY st.Degree DESC
+
+
+--CREATE PROCEDURE GetStateTablesWithCount
+--    @ShowOnlyActive BIT = 1,    -- If 1, show only active state tables; if 0, show all
+--    @Skip INT = 0,              -- Number of records to skip (OFFSET)
+--    @Take INT = 30              -- Number of records to take (FETCH)
 --AS
 --BEGIN
---SELECT 
---OS.FullName,
---ST.Name, 
---ST.Degree, 
---ST.UnitCount,
---ST.MonthlySalaryFrom, 
---ST.HourlySalary,
---ST.MonthlySalaryExtra,
---ST.OccupiedPostCount,
---ST.DocumentNumber,
---ST.DocumentDate,
---SWT.Type,
---ST.HarmfulnessCoefficient,
---ST.WorkHours,
---ST.WorkHoursSaturday,
---ST.TabelPriority,
---ST.TabelPosition
---FROM StateTables as ST 
---JOIN OrganizationStructures AS OS ON OS.Id = ST.OrganizationStructureId
---JOIN StateWorkTypes AS SWT ON ST.WorkTypeId = SWT.Id
---WHERE Type IS NOT  NULL
---ORDER BY OS.FullName
---END
+--    -- Return total count of state tables
+--    SELECT COUNT(*) AS TotalCount
+--    FROM StateTables
+--    WHERE (@ShowOnlyActive = 0 OR IsCanceled = 0);
+
+--    -- Return paginated data
+--    SELECT 
+--        st.*, 
+--        os.*, 
+--        swt.*
+--    FROM StateTables AS st
+--    LEFT JOIN OrganizationStructures AS os 
+--        ON st.OrganizationStructureId = os.Id
+--    LEFT JOIN StateWorkTypes AS swt 
+--        ON st.WorkTypeId = swt.Id
+--    WHERE (@ShowOnlyActive = 0 OR st.IsCanceled = 0)
+--    ORDER BY st.Id  -- Order by the Id column to ensure correct pagination
+--    OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;
+--END;
+
+
+// NOT CREATED
+GO
+CREATE PROCEDURE GetStateTablesByOrganizationId
+    @OrganizationId INT,      
+    @ShowOnlyActive BIT = 1   
+AS
+BEGIN
+    SELECT 
+        st.*, 
+        os.*, 
+        swt.*
+    FROM StateTables AS st
+    LEFT JOIN OrganizationStructures AS os 
+        ON st.OrganizationStructureId = os.Id
+    LEFT JOIN StateWorkTypes AS swt 
+        ON st.WorkTypeId = swt.Id
+    WHERE st.OrganizationStructureId = @OrganizationId
+    AND (@ShowOnlyActive = 0 OR st.IsCanceled = 0);  -- Conditionally filter by IsCanceled
+END;
+
+
+
