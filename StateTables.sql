@@ -353,7 +353,80 @@
 --END
 
 
+--GO
+--CREATE PROCEDURE SoftDeleteStateTable
+--    @Id INT
+--AS
+--BEGIN
+--    BEGIN TRY
+--        -- Start a transaction
+--        BEGIN TRANSACTION;
+
+--        -- Check if the StateTable with the given Id exists
+--        IF NOT EXISTS (SELECT 1 FROM StateTables WHERE Id = @Id)
+--        BEGIN
+--            THROW 50000, 'No matching StateTable found.', 1;
+--        END
+
+--        -- Update the IsCanceled field to true for the given Id
+--        UPDATE StateTables
+--        SET IsCanceled = 1
+--        WHERE Id = @Id;
+
+--        -- Commit the transaction if everything is successful
+--        COMMIT TRANSACTION;
+--    END TRY
+--    BEGIN CATCH
+--        -- Rollback the transaction in case of an error
+--        IF @@TRANCOUNT > 0
+--        BEGIN
+--            ROLLBACK TRANSACTION;
+--        END
+
+--        -- Rethrow the error
+--        DECLARE @ErrorMessage NVARCHAR(4000), @ErrorSeverity INT, @ErrorState INT;
+--        SELECT @ErrorMessage = ERROR_MESSAGE(), @ErrorSeverity = ERROR_SEVERITY(), @ErrorState = ERROR_STATE();
+--        RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+--    END CATCH
+--END;
 
 
 
+
+--GO
+--CREATE PROCEDURE SoftDeleteOrganizationStructure
+--    @Id INT
+--AS
+--BEGIN
+--    -- Start a transaction
+--    BEGIN TRY
+--        BEGIN TRANSACTION;
+
+--        -- Check if the OrganizationStructure exists
+--        IF NOT EXISTS (SELECT 1 FROM OrganizationStructures WHERE Id = @Id)
+--        BEGIN
+--            THROW 50000, 'Invalid OrganizationStructure: No matching record found.', 1;
+--        END
+
+--        -- Soft delete by setting the Canceled field to 1
+--        UPDATE OrganizationStructures
+--        SET Canceled = 1
+--        WHERE Id = @Id;
+
+--        -- Commit the transaction if everything is successful
+--        COMMIT TRANSACTION;
+--    END TRY
+--    BEGIN CATCH
+--        -- Rollback the transaction in case of an error
+--        IF @@TRANCOUNT > 0
+--        BEGIN
+--            ROLLBACK TRANSACTION;
+--        END
+
+--        -- Rethrow the error
+--        DECLARE @ErrorMessage NVARCHAR(4000), @ErrorSeverity INT, @ErrorState INT;
+--        SELECT @ErrorMessage = ERROR_MESSAGE(), @ErrorSeverity = ERROR_SEVERITY(), @ErrorState = ERROR_STATE();
+--        RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+--    END CATCH
+--END;
 
