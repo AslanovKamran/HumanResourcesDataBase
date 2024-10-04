@@ -68,23 +68,112 @@ USE SP_HR
 --)
 
 
+----IDENTITY IS NOT SET 
 
---IDENTITY IS NOT SET 
+--CREATE PROCEDURE AddEmployee
+--    @Id INT,
+--    @Surname NVARCHAR(100),
+--    @Name NVARCHAR(100),
+--    @FatherName NVARCHAR(100),
+--    @GenderId INT,
+--    @MaritalStatusId INT,
+--    @EntryDate DATE,
+--    @StateTableId INT,
+--    @PhotoUrl NVARCHAR(255) = NULL  -- This is optional, so defaulting to NULL
+--AS
+--BEGIN
+--    -- Start the transaction
+--    BEGIN TRANSACTION;
+
+--    BEGIN TRY
+--        -- Insert the new employee
+--        INSERT INTO Employees (
+--            Id, 
+--            Surname, 
+--            Name, 
+--            FatherName, 
+--            GenderId, 
+--            MaritalStatusId, 
+--            EntryDate, 
+--            StateTableId, 
+--            PhotoUrl
+--        )
+--        VALUES (
+--            @Id, 
+--            @Surname, 
+--            @Name, 
+--            @FatherName, 
+--            @GenderId, 
+--            @MaritalStatusId, 
+--            @EntryDate, 
+--            @StateTableId, 
+--            @PhotoUrl
+--        );
+
+--        -- If everything is successful, commit the transaction
+--        COMMIT TRANSACTION;
+
+--    END TRY
+--    BEGIN CATCH
+--        -- If an error occurs, rollback the transaction
+--        ROLLBACK TRANSACTION;
+
+--        -- Return the error message and details
+--        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
+--        DECLARE @ErrorSeverity INT = ERROR_SEVERITY();
+--        DECLARE @ErrorState INT = ERROR_STATE();
+
+--        -- Return error information
+--        RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+--    END CATCH;
+--END;
 
 
 
 --CREATE PROCEDURE GetEmployeesInChunks
 --    @Skip INT = 0,
---    @Take INT = 10
+--    @Take INT = 10,
+--    @Surname NVARCHAR(100) = NULL,
+--    @Name NVARCHAR(100) = NULL,
+--    @FatherName NVARCHAR(100) = NULL,
+--    @BirthDateStart DATE = NULL,
+--    @BirthDateEnd DATE = NULL,
+--    @OrganizationFullName NVARCHAR(255) = NULL,
+--    @EntryDateStart DATE = NULL,
+--    @EntryDateEnd DATE = NULL,
+--    @GenderId INT = NULL,
+--    @MaritalStatusId INT = NULL,
+--    @HasPoliticalParty BIT = NULL,
+--    @HasSocialInsuranceNumber BIT = NULL,
+--    @TabelNumber NVARCHAR(255) = NULL,
+--    @AnvisUserId NVARCHAR(255) = NULL,
+--    @IsWorking BIT = NULL
 --AS
 --BEGIN
---    -- Return the total count of employees
+--    -- Return the total count of employees (including filters)
 --    SELECT COUNT(*) AS TotalCount
 --    FROM Employees
---    WHERE IsWorking = 1;
+--    JOIN StateTables ON StateTables.Id = Employees.StateTableId
+--    JOIN OrganizationStructures ON OrganizationStructures.Id = StateTables.OrganizationStructureId
+--    WHERE (IsWorking = @IsWorking OR @IsWorking IS NULL)
+--         AND (@Surname IS NULL OR Employees.Surname LIKE '%' + @Surname + '%')
+--        AND (@Name IS NULL OR Employees.Name LIKE '%' + @Name + '%')
+--      AND (@FatherName IS NULL OR Employees.FatherName = @FatherName)
+--      AND (@BirthDateStart IS NULL OR Employees.BirthDate >= @BirthDateStart)
+--      AND (@BirthDateEnd IS NULL OR Employees.BirthDate <= @BirthDateEnd)
+--      AND (@EntryDateStart IS NULL OR Employees.EntryDate >= @EntryDateStart)
+--      AND (@EntryDateEnd IS NULL OR Employees.EntryDate <= @EntryDateEnd)
+--      AND (@GenderId IS NULL OR Employees.GenderId = @GenderId)
+--      AND (@MaritalStatusId IS NULL OR Employees.MaritalStatusId = @MaritalStatusId)
+--      AND (@HasPoliticalParty IS NULL OR (@HasPoliticalParty = 1 AND Employees.PoliticalParty IS NOT NULL) OR (@HasPoliticalParty = 0 AND Employees.PoliticalParty IS NULL))
+--      AND (@HasSocialInsuranceNumber IS NULL OR (@HasSocialInsuranceNumber = 1 AND Employees.SocialInsuranceNumber IS NOT NULL) OR (@HasSocialInsuranceNumber = 0 AND Employees.SocialInsuranceNumber IS NULL))
+--      AND (@TabelNumber IS NULL OR Employees.TabelNumber = @TabelNumber)
+--      AND (@AnvisUserId IS NULL OR Employees.AnvisUserId = @AnvisUserId)
+--AND (@OrganizationFullName IS NULL OR OrganizationStructures.FullName LIKE '%' + @OrganizationFullName + '%')
 
---    -- Return the actual paginated data
+--    -- Return the actual paginated data with filters
 --    SELECT 
+--		Employees.Id,
 --        Employees.PhotoUrl,
 --        Employees.Surname,
 --        Employees.Name,
@@ -95,6 +184,16 @@ USE SP_HR
 --        Employees.SocialInsuranceNumber,
 --        Employees.TabelNumber,
 --        Employees.EntryDate,
+--		  -- Logic to calculate QuitDate
+--          CASE 
+--              WHEN Employees.IsWorking = 1 THEN NULL
+--              ELSE (
+--                  SELECT TOP 1 WorkActivityDate 
+--                  FROM WorkActivities 
+--                  WHERE EmployeeId = Employees.Id AND WorkActivityTypeId = 3 
+--                  ORDER BY WorkActivityDate DESC
+--              )
+--          END AS QuitDate,
 --        Employees.TrainershipYear,
 --        Employees.TrainershipMonth,
 --        Employees.TrainershipDay,
@@ -102,13 +201,93 @@ USE SP_HR
 --        StateTables.Name AS StateTableName,
 --        StateTables.Degree AS StateTableDegree,
 --        Employees.IsWorking
---    FROM Employees 
+--    FROM Employees
 --    JOIN Genders ON Genders.Id = Employees.GenderId
 --    JOIN MaritalStatuses ON MaritalStatuses.Id = Employees.MaritalStatusId
 --    JOIN StateTables ON StateTables.Id = Employees.StateTableId
 --    JOIN OrganizationStructures ON OrganizationStructures.Id = StateTables.OrganizationStructureId
---    WHERE Employees.IsWorking = 1
+--    WHERE (Employees.IsWorking = @IsWorking OR @IsWorking IS NULL)
+--      AND (@Surname IS NULL OR Employees.Surname LIKE '%' + @Surname + '%')
+--      AND (@Name IS NULL OR Employees.Name LIKE '%' + @Name + '%')
+--      AND (@FatherName IS NULL OR Employees.FatherName = @FatherName)
+--      AND (@BirthDateStart IS NULL OR Employees.BirthDate >= @BirthDateStart)
+--      AND (@BirthDateEnd IS NULL OR Employees.BirthDate <= @BirthDateEnd)
+--      AND (@EntryDateStart IS NULL OR Employees.EntryDate >= @EntryDateStart)
+--      AND (@EntryDateEnd IS NULL OR Employees.EntryDate <= @EntryDateEnd)
+--      AND (@GenderId IS NULL OR Employees.GenderId = @GenderId)
+--      AND (@MaritalStatusId IS NULL OR Employees.MaritalStatusId = @MaritalStatusId)
+--      AND (@HasPoliticalParty IS NULL OR (@HasPoliticalParty = 1 AND Employees.PoliticalParty IS NOT NULL) OR (@HasPoliticalParty = 0 AND Employees.PoliticalParty IS NULL))
+--      AND (@HasSocialInsuranceNumber IS NULL OR (@HasSocialInsuranceNumber = 1 AND Employees.SocialInsuranceNumber IS NOT NULL) OR (@HasSocialInsuranceNumber = 0 AND Employees.SocialInsuranceNumber IS NULL))
+--      AND (@TabelNumber IS NULL OR Employees.TabelNumber = @TabelNumber)
+--      AND (@AnvisUserId IS NULL OR Employees.AnvisUserId = @AnvisUserId)
+--AND (@OrganizationFullName IS NULL OR OrganizationStructures.FullName LIKE '%' + @OrganizationFullName + '%')
+
 --    ORDER BY Employees.EntryDate
---    OFFSET @skip ROWS
---    FETCH NEXT @take ROWS ONLY;
+--    OFFSET @Skip ROWS
+--    FETCH NEXT @Take ROWS ONLY;
 --END;
+
+
+
+--GO
+--CREATE PROC GetUserGeneralInfo @Id INT
+--AS
+--BEGIN
+--    SELECT 
+--        Employees.Id,
+--        Employees.Surname,
+--        Employees.Name,
+--        Employees.FatherName,
+
+--        Employees.BirthDate,
+--        Nationalities.Name AS [Nationality],
+--        Genders.Type AS [Gender],
+--        MaritalStatuses.Status AS [MaritalStatus],
+--        Employees.SocialInsuranceNumber,
+--        Employees.TabelNumber,
+--        Employees.AnvisUserId,
+--        Employees.EntryDate,
+
+--        -- Logic to add the QuitDate column
+--        CASE 
+--            WHEN Employees.IsWorking = 1 THEN NULL
+--            ELSE (SELECT TOP 1 WorkActivityDate 
+--                  FROM WorkActivities 
+--                  WHERE EmployeeId = Employees.Id AND WorkActivityTypeId = 3 
+--                  ORDER BY WorkActivityDate DESC) -- QuitDate is the most recent WorkActivityDate for fired employees
+--        END AS QuitDate,
+
+--        Employees.TrainershipYear,
+--        Employees.TrainershipMonth,
+--        Employees.TrainershipDay,
+
+--        Employees.RegistrationAddress,
+--        Employees.LivingAddress,
+
+--        Employees.MobileNumber,
+--        Employees.MobileNumber2,
+--        Employees.MobileNumber3,
+--        Employees.TelephoneNumber,
+--        Employees.InternalNumber,
+--        Employees.Email,
+--        OrganizationStructures.FullName AS [OrganizationStructureName],
+--        StateTables.Name AS [StateTableName],
+--        StateTables.Degree AS [StateTableDegree],
+--        Employees.IsTradeUnionMember,
+--        Employees.IsVeteran,
+--        Employees.HasWarInjury,
+--        Employees.DisabilityDegree,
+--        Employees.HasDisabledChild,
+--        Employees.IsRefugee,
+--        Employees.IsRefugeeFromAnotherCountry
+
+--    FROM Employees
+--    LEFT JOIN Nationalities ON Nationalities.Id = Employees.NationalityId
+--    LEFT JOIN Genders ON Genders.Id = Employees.GenderId
+--    LEFT JOIN MaritalStatuses ON MaritalStatuses.Id = Employees.MaritalStatusId
+--    LEFT JOIN StateTables ON StateTables.Id = Employees.StateTableId
+--    LEFT JOIN OrganizationStructures ON OrganizationStructures.Id = StateTables.OrganizationStructureId
+--    WHERE Employees.Id = @Id 
+--END;
+--GO
+

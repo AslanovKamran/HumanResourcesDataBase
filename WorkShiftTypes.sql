@@ -1,0 +1,14 @@
+﻿GO
+USE SP_HR
+
+--GO
+--CREATE TABLE WorkShiftTypes 
+--(
+--[Id] INT PRIMARY KEY IDENTITY,
+--[Type] NVARCHAR (50) UNIQUE NOT NULL
+--)
+
+--INSERT INTO WorkShiftTypes VALUES (N'Gündüz')
+--INSERT INTO WorkShiftTypes VALUES (N'Gecə')
+
+SELECT * FROM WorkShiftTypes ORDER BY Id

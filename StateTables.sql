@@ -119,6 +119,7 @@
 
 
 
+
 --CREATE PROCEDURE GetStateTablesWithCount
 --    @ShowOnlyActive BIT = 1,    -- If 1, show only active state tables; if 0, show all
 --    @Skip INT = 0,              -- Number of records to skip (OFFSET)
@@ -130,11 +131,52 @@
 --    FROM StateTables
 --    WHERE (@ShowOnlyActive = 0 OR IsCanceled = 0);
 
---    -- Return paginated data
+--    -- Return paginated data including OccupiedPostCount calculation
 --    SELECT 
---        st.*, 
---        os.*, 
---        swt.*
+--        st.Id,
+--        st.Name,
+--        st.UnitCount,
+--        st.MonthlySalaryFrom,
+--        st.MonthlySalaryTo,
+--        -- Use the dynamically calculated OccupiedPostCount
+--        (SELECT COUNT(*)
+--         FROM Employees 
+--         WHERE Employees.StateTableId = st.Id AND Employees.IsWorking = 1) AS OccupiedPostCount,
+--        st.DocumentNumber,
+--        st.DocumentDate,
+--        st.WorkTypeId,
+--        st.OrganizationStructureId,
+--        st.WorkHours,
+--        st.WorkHoursSaturday,
+--        st.TabelPosition,
+--        st.TabelPriority,
+--        st.ExcludeBankomat,
+--        -- Fetch the Degree column as-is (no COALESCE)
+--        st.Degree,  -- Make sure we are correctly retrieving the Degree value
+--        st.HourlySalary,
+--        st.IsCanceled,
+--        st.WorkingHoursSpecial,
+--        st.MonthlySalaryExtra,
+--        st.HarmfulnessCoefficient,
+--        -- All columns from OrganizationStructures
+--        os.Id,
+--        os.Code,
+--        os.Name,
+--        os.BeginningHistory,
+--        os.ParentId,
+--        os.FullName,
+--        os.FirstNumber,
+--        os.SecondNumber,
+--        os.TabelOrganizationId,
+--        os.TabelPriority,
+--        os.Canceled,
+--        os.OrderId,
+--        os.HeadName,
+--        os.HeadPosition,
+--        os.IsSeaCoef,
+--        -- All columns from StateWorkTypes
+--        swt.Id,
+--        swt.Type
 --    FROM StateTables AS st
 --    LEFT JOIN OrganizationStructures AS os 
 --        ON st.OrganizationStructureId = os.Id
@@ -147,24 +189,71 @@
 
 
 
---GO
 --CREATE PROCEDURE GetStateTablesByOrganizationId
 --    @OrganizationId INT,      
 --    @ShowOnlyActive BIT = 1   
 --AS
 --BEGIN
 --    SELECT 
---        st.*, 
---        os.*, 
---        swt.*
+--        st.Id,
+--        st.Name,
+--        st.UnitCount,
+--        st.MonthlySalaryFrom,
+--        st.MonthlySalaryTo,
+--        -- Use the dynamically calculated OccupiedPostCount
+--        (SELECT COUNT(*)
+--         FROM Employees 
+--         WHERE Employees.StateTableId = st.Id AND Employees.IsWorking = 1) AS OccupiedPostCount,
+--        st.DocumentNumber,
+--        st.DocumentDate,
+--        st.WorkTypeId,
+--        st.OrganizationStructureId,
+--        st.WorkHours,
+--        st.WorkHoursSaturday,
+--        st.TabelPosition,
+--        st.TabelPriority,
+--        st.ExcludeBankomat,
+--        -- Fetch the Degree column as-is (no COALESCE)
+--        st.Degree,  -- Make sure we are correctly retrieving the Degree value
+--        st.HourlySalary,
+--        st.IsCanceled,
+--        st.WorkingHoursSpecial,
+--        st.MonthlySalaryExtra,
+--        st.HarmfulnessCoefficient,
+--        -- All columns from OrganizationStructures
+--        os.Id,
+--        os.Code,
+--        os.Name,
+--        os.BeginningHistory,
+--        os.ParentId,
+--        os.FullName,
+--        os.FirstNumber,
+--        os.SecondNumber,
+--        os.TabelOrganizationId,
+--        os.TabelPriority,
+--        os.Canceled,
+--        os.OrderId,
+--        os.HeadName,
+--        os.HeadPosition,
+--        os.IsSeaCoef,
+--        -- All columns from StateWorkTypes
+--        swt.Id,
+--        swt.Type
 --    FROM StateTables AS st
 --    LEFT JOIN OrganizationStructures AS os 
 --        ON st.OrganizationStructureId = os.Id
 --    LEFT JOIN StateWorkTypes AS swt 
 --        ON st.WorkTypeId = swt.Id
---    WHERE st.OrganizationStructureId = @OrganizationId
---    AND (@ShowOnlyActive = 0 OR st.IsCanceled = 0);  -- Conditionally filter by IsCanceled
+--   WHERE st.OrganizationStructureId = @OrganizationId
+--    AND (@ShowOnlyActive = 0 OR st.IsCanceled = 0)  -- Conditionally filter by IsCanceled
+--    ORDER BY st.Id  -- Order by the Id column to ensure correct pagination
 --END;
+
+
+
+
+
+
 
 
 
