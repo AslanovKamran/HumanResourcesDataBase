@@ -228,9 +228,8 @@ USE SP_HR
 --END;
 
 
-
 --GO
---CREATE PROC GetUserGeneralInfo @Id INT
+--CREATE PROC GetUserGeneralInfo @Id = 10000 INT
 --AS
 --BEGIN
 --    SELECT 
@@ -278,8 +277,8 @@ USE SP_HR
 --        Employees.HasWarInjury,
 --        Employees.DisabilityDegree,
 --        Employees.HasDisabledChild,
---        Employees.IsRefugee,
---        Employees.IsRefugeeFromAnotherCountry
+--        Employees.IsRefugee, --Məcburi köçkün
+--        Employees.IsRefugeeFromAnotherCountry -- Qaçqın
 
 --    FROM Employees
 --    LEFT JOIN Nationalities ON Nationalities.Id = Employees.NationalityId
@@ -290,4 +289,120 @@ USE SP_HR
 --    WHERE Employees.Id = @Id 
 --END;
 --GO
+
+
+--GO
+--CREATE PROC UpdateEmployeeGeneralInfo
+--    @Id INT,
+--    @Surname NVARCHAR(100),
+--    @Name NVARCHAR(100),
+--    @FatherName NVARCHAR(100),
+--    @PhotoUrl NVARCHAR(255),
+--    @BirthDate DATE,
+--    @BirthPlace NVARCHAR(255),
+--    @NationalityId INT,
+--    @GenderId INT,
+--    @MaritalStatusId INT,
+--    @SocialInsuranceNumber NVARCHAR(255),
+--    @TabelNumber NVARCHAR(255),
+--    @AnvisUserId NVARCHAR(255),
+--    @TrainershipYear INT,
+--    @TrainershipMonth INT,
+--    @TrainershipDay INT,
+--    @RegistrationAddress NVARCHAR(255),
+--    @LivingAddress NVARCHAR(255),
+--    @MobileNumber NVARCHAR(255),
+--    @MobileNumber2 NVARCHAR(255),
+--    @MobileNumber3 NVARCHAR(255),
+--    @TelephoneNumber NVARCHAR(255),
+--    @InternalNumber NVARCHAR(100),
+--    @Email NVARCHAR(255),
+--    @IsTradeUnionMember BIT,
+--    @IsVeteran BIT,
+--    @HasWarInjury BIT,
+--    @DisabilityDegree INT,
+--    @HasDisabledChild BIT,
+--    @IsRefugeeFromAnotherCountry BIT,
+--    @IsRefugee BIT
+--AS
+--BEGIN
+--    BEGIN TRY
+--        BEGIN TRANSACTION;
+
+--        UPDATE Employees
+--        SET 
+--            Surname = @Surname,
+--            Name = @Name,
+--            FatherName = @FatherName,
+--            PhotoUrl = @PhotoUrl,
+--            BirthDate = @BirthDate,
+--            BirthPlace = @BirthPlace,
+--            NationalityId = @NationalityId,
+--            GenderId = @GenderId,
+--            MaritalStatusId = @MaritalStatusId,
+--            SocialInsuranceNumber = @SocialInsuranceNumber,
+--            TabelNumber = @TabelNumber,
+--            AnvisUserId = @AnvisUserId,
+--            TrainershipYear = @TrainershipYear,
+--            TrainershipMonth = @TrainershipMonth,
+--            TrainershipDay = @TrainershipDay,
+--            RegistrationAddress = @RegistrationAddress,
+--            LivingAddress = @LivingAddress,
+--            MobileNumber = @MobileNumber,
+--            MobileNumber2 = @MobileNumber2,
+--            MobileNumber3 = @MobileNumber3,
+--            TelephoneNumber = @TelephoneNumber,
+--            InternalNumber = @InternalNumber,
+--            Email = @Email,
+--            IsTradeUnionMember = @IsTradeUnionMember,
+--            IsVeteran = @IsVeteran,
+--            HasWarInjury = @HasWarInjury,
+--            DisabilityDegree = @DisabilityDegree,
+--            HasDisabledChild = @HasDisabledChild,
+--            IsRefugeeFromAnotherCountry = @IsRefugeeFromAnotherCountry,
+--            IsRefugee = @IsRefugee
+--        WHERE Id = @Id;
+
+--        -- Commit the transaction if the update succeeds
+--        COMMIT TRANSACTION;
+--    END TRY
+--    BEGIN CATCH
+--        -- Rollback the transaction if an error occurs
+--        ROLLBACK TRANSACTION;
+
+--        -- Return the error information
+--        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
+--        DECLARE @ErrorSeverity INT = ERROR_SEVERITY();
+--        DECLARE @ErrorState INT = ERROR_STATE();
+        
+--        RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+--    END CATCH
+--END;
+
+
+--GO
+--CREATE PROC GetEmployeesEducation @Id INT
+--AS
+--BEGIN
+--SELECT 
+--edu.Id,
+--et.Type AS [EducationType],
+--edu.Institution, 
+--edu.Speciality,
+--ek.Kind AS [EducationKind],
+--edu.EducationStartedAt,
+--edu.EducationEndedAt,
+--edu.DiplomaNumber,
+--dt.Type AS [DiplomaType], 
+--edu.EmployeeId
+--FROM Educations as edu
+--JOIN DiplomaTypes dt on dt.Id	= edu.DiplomaTypeId
+--JOIN EducationKinds ek on ek.id = edu.EducationKindId
+--JOIN EducationTypes et on et.Id = edu.EducationTypeId
+--where edu.EmployeeId = @Id
+--ORDER BY edu.EducationStartedAt ASC
+--END
+
+
+
 
