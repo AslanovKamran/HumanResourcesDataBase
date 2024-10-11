@@ -379,3 +379,46 @@ USE SP_HR
 --    END CATCH
 --END;
 
+
+--CREATE PROCEDURE DeleteEmployee
+--    @Id INT
+--AS
+--BEGIN
+--    BEGIN TRY
+--        -- Start a transaction
+--        BEGIN TRANSACTION;
+
+--        -- Update the IsWorking column to 0 instead of deleting the record
+--        UPDATE Employees
+--        SET IsWorking = 0
+--        WHERE Id = @Id;
+
+--        -- Check if the update affected any rows
+--        IF @@ROWCOUNT = 0
+--        BEGIN
+--            THROW 50001, 'Employee not found or already inactive.', 1;
+--        END
+
+--        -- Commit the transaction if no errors
+--        COMMIT TRANSACTION;
+--    END TRY
+--    BEGIN CATCH
+--        -- Rollback transaction if an error occurs
+--        IF @@TRANCOUNT > 0
+--            ROLLBACK TRANSACTION;
+
+--        -- Retrieve and return error information
+--        DECLARE @ErrorMessage NVARCHAR(4000);
+--        DECLARE @ErrorSeverity INT;
+--        DECLARE @ErrorState INT;
+
+--        SELECT 
+--            @ErrorMessage = ERROR_MESSAGE(),
+--            @ErrorSeverity = ERROR_SEVERITY(),
+--            @ErrorState = ERROR_STATE();
+
+--        RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+--    END CATCH
+--END;
+
+

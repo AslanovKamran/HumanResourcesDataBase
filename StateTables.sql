@@ -188,12 +188,11 @@
 --END;
 
 
-
---CREATE PROCEDURE GetStateTablesByOrganizationId
+--CREATE PROCEDURE GetStateTablesByOrganizationId 
 --    @OrganizationId INT,      
 --    @ShowOnlyActive BIT = 1   
 --AS
---BEGIN
+--BEGIN 
 --    SELECT 
 --        st.Id,
 --        st.Name,
@@ -248,9 +247,6 @@
 --    AND (@ShowOnlyActive = 0 OR st.IsCanceled = 0)  -- Conditionally filter by IsCanceled
 --    ORDER BY st.Id  -- Order by the Id column to ensure correct pagination
 --END;
-
-
-
 
 
 
