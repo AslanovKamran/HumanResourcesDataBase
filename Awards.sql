@@ -18,10 +18,7 @@ USE SP_HR
 --FOREIGN KEY (TypeId)
 --REFERENCES AwardTypes(Id);
 
-
-
 --IDENTITY NOT SET
-
 
 ------DROPPING Identity
 ---- 1. Add a new non-nullable column `NewId`
@@ -41,13 +38,9 @@ USE SP_HR
 
 
 
-
-
-
-
 --GO
 --CREATE PROC GetAwards 
---    @EmployeeId = 271 INT
+--    @EmployeeId  INT
 --AS
 --BEGIN
 --    IF @EmployeeId IS NULL
@@ -62,7 +55,8 @@ USE SP_HR
 --        AwardTypes.Description AS AwardTypeDescription,
 --        Awards.OrderNumber,
 --        Awards.Amount,
---        Awards.Note
+--        Awards.Note,
+--		  Awards.EmployeeId
 --    FROM Awards 
 --    LEFT JOIN AwardTypes ON AwardTypes.Id = Awards.TypeId
 --    WHERE Awards.EmployeeId = @EmployeeId
@@ -70,7 +64,7 @@ USE SP_HR
 --END;
 
 
-
+ 
 
 --GO
 --CREATE PROC UpdateAward
