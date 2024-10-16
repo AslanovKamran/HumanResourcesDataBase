@@ -47,4 +47,62 @@ CREATE Table Parties
 --DROP TABLE Temp
 
 
-SELECT * FROM Parties ORDER BY Id desc
+
+--GO
+--CREATE PROC GetPoliticalParty 
+--    @Id INT
+--AS
+--BEGIN
+--    SELECT 
+--        Id, 
+--        PoliticalParty, 
+--        PartyMembershipNumber, 
+--        PartyEntranceDate, 
+--        PartyCardGivenDate, 
+--        PartyOrganizationRegion
+--    FROM Employees
+--    WHERE Id = @Id
+--END;
+
+
+--GO
+--CREATE PROC UpdatePoliticalParty
+--    @Id INT,
+--    @PoliticalParty NVARCHAR(255) = NULL,
+--    @PartyMembershipNumber NVARCHAR(255) = NULL,
+--    @PartyEntranceDate DATE = NULL,
+--    @PartyCardGivenDate DATE = NULL,
+--    @PartyOrganizationRegion NVARCHAR(255) = NULL
+--AS
+--BEGIN
+--    BEGIN TRY
+--        -- Start a transaction
+--        BEGIN TRANSACTION;
+
+--        -- Update the political party information for the employee
+--        UPDATE Employees
+--        SET 
+--            PoliticalParty = @PoliticalParty,
+--            PartyMembershipNumber = @PartyMembershipNumber,
+--            PartyEntranceDate = @PartyEntranceDate,
+--            PartyCardGivenDate = @PartyCardGivenDate,
+--            PartyOrganizationRegion = @PartyOrganizationRegion
+--        WHERE Id = @Id;
+
+--        -- Commit the transaction
+--        COMMIT TRANSACTION;
+--    END TRY
+--    BEGIN CATCH
+--        -- Roll back transaction if an error occurs
+--        IF @@TRANCOUNT > 0
+--            ROLLBACK TRANSACTION;
+
+--        -- Raise an error message with details
+--        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
+--        DECLARE @ErrorSeverity INT = ERROR_SEVERITY();
+--        DECLARE @ErrorState INT = ERROR_STATE();
+--        RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+--    END CATCH
+--END;
+
+
