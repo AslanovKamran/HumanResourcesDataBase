@@ -16,7 +16,6 @@ CREATE Table Vacations
 
 SELECT * FROM VacationTypes
 
-
 --BULK
 
 

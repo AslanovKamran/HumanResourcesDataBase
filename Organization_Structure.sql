@@ -144,34 +144,20 @@
 --SELECT * FROM OrganizationStructures ORDER BY Id DESC
 
 --GO
---CREATE PROC OrganizationStructures_GetOrganizationStructures 
+--CREATE PROC GetOrganizationStructures
+--    @IncludeCanceled BIT = NULL -- Optional parameter; NULL means only active, TRUE means all
 --AS
 --BEGIN
---SELECT 
---[Id],
---[Name],
---[FullName],
---[ParentId],
---[Canceled]
---FROM OrganizationStructures ORDER BY ParentId, Id
---END
-
-
-
---GO
---CREATE PROC OrganizationStructures_GetExistingOrganizationStructures 
---AS
---BEGIN
---SELECT 
---[Id],
---[Name],
---[FullName],
---[ParentId],
---[Canceled]
---FROM OrganizationStructures 
---WHERE Canceled = 0
---ORDER BY ParentId, Id
---END
+--    SELECT 
+--        [Id],
+--        [Name],
+--        [FullName],
+--        [ParentId],
+--        [Canceled]
+--    FROM OrganizationStructures
+--    WHERE (@IncludeCanceled = 1 OR Canceled = 0) -- If IncludeCanceled is 1, returns all; otherwise, only active
+--    ORDER BY ParentId, Id;
+--END;
 
 
 --GO
@@ -377,3 +363,5 @@
 --        RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
 --    END CATCH
 --END;
+
+

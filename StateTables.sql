@@ -118,8 +118,6 @@
 
 
 
-
-
 --CREATE PROCEDURE GetStateTablesWithCount
 --    @ShowOnlyActive BIT = 1,    -- If 1, show only active state tables; if 0, show all
 --    @Skip INT = 0,              -- Number of records to skip (OFFSET)
@@ -186,6 +184,7 @@
 --    ORDER BY st.Id  -- Order by the Id column to ensure correct pagination
 --    OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;
 --END;
+
 
 
 --CREATE PROCEDURE GetStateTablesByOrganizationId 
