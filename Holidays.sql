@@ -1,3 +1,6 @@
+GO
+USE SP_HR
+
 CREATE TABLE Holidays 
 (
 [Id] INT PRIMARY KEY IDENTITY,
@@ -6,7 +9,3 @@ CREATE TABLE Holidays
 [HolidayTypeId] INT FOREIGN KEY REFERENCES HolidayTypes(Id) NOT NULL,
 [HolidayForShiftId] INT FOREIGN KEY REFERENCES HolidaysForShifts(Id) NULL
 )
-
-SELECT * FROM Holidays 
-ORDER BY Date ASC
-

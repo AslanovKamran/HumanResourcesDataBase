@@ -248,6 +248,9 @@ INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('202
 INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2022-08-11', N'Zəfər günü', 1, NULL);
 INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2022-09-11', N'Azərbaycan Respublikasının Dövlət Bayrağı günü', 1, NULL);
 INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2022-12-31', N'Dünya Azərbaycanlılarının  Həmrəyliyi günü', 1, NULL);
+
+
+
 INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2023-01-01', N'Yeni il bayramı', 1, NULL);
 INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2023-02-01', N'Yeni il bayramı', 1, NULL);
 INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2023-03-01', NULL, 3, NULL);
@@ -280,16 +283,32 @@ INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('202
 INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2023-09-11', NULL, 1, NULL);
 INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2023-10-11', NULL, 3, 1);
 INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2023-12-31', NULL, 1, NULL);
+
+
+
+
+
+
+
+
+
+
+
+
+
 INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-01-01', NULL, 1, NULL);
-INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-02-01', NULL, 1, NULL);
-INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-03-01', NULL, 3, NULL);
-INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-04-01', NULL, 3, 1);
-INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-05-01', NULL, 3, 1);
-INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-05-01', NULL, 3, 1);
-INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-07-01', NULL, 5, 1);
+INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-01-02', NULL, 1, NULL);
+INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-01-03', NULL, 3, NULL);
+INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-01-04', NULL, 3, 1);
+INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-01-05', NULL, 3, 1);
+INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-01-06', NULL, 3, 1);
+INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-01-07', NULL, 5, 1);
 INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-01-20', N'Ümumxalq hüzn günü', 2, NULL);
-INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-07-02', N'Azərbaycan Respublikası Prezidenti seçkiləri günü', 1, NULL);
-INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-08-03', N'Qadınlar günü', 1, NULL);
+
+
+INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-02-07', N'Azərbaycan Respublikası Prezidenti seçkiləri günü', 1, NULL);
+
+INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-03-08', N'Qadınlar günü', 1, NULL);
 INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-03-20', N'Novruz bayramı', 1, NULL);
 INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-03-21', N'Novruz bayramı', 1, NULL);
 INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-03-22', N'Novruz bayramı', 1, NULL);
@@ -297,21 +316,38 @@ INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('202
 INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-03-24', N'Novruz bayramı', 1, NULL);
 INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-03-25', NULL, 1, NULL);
 INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-03-26', NULL, 3, 1);
-INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-06-04', NULL, 5, 1);
-INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-10-04', N'Ramazan  bayramı', 1, NULL);
-INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-11-04', N'Ramazan  bayramı', 1, NULL);
-INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-12-04', NULL, 3, 1);
-INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-09-05', N'Faşizm üzərində qələbə günü', 1, NULL);
+
+
+INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-04-06', NULL, 5, 1);
+INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-04-10', N'Ramazan  bayramı', 1, NULL);
+INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-04-11', N'Ramazan  bayramı', 1, NULL);
+INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-04-12', NULL, 3, 1);
+
+
+INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-05-09', N'Faşizm üzərində qələbə günü', 1, NULL);
 INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-05-28', N'Müstəqillik Günü', 1, NULL);
+
+
 INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-06-15', N'Azərbaycan xalqının milli qurtuluş günü', 1, NULL);
 INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-06-16', N'Qurban bayramı', 1, NULL);
 INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-06-17', N'Qurban bayramı', 1, NULL);
 INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-06-18', NULL, 3, NULL);
 INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-06-19', NULL, 3, 1);
 INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-06-26', N'Azərbaycan Respublikasının Silahlı Qüvvələri  günü', 1, NULL);
-INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-01-09', N'Azərbaycan Respublikası Parlament seçkiləri günü', 1, 3);
-INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-08-11', N'Zəfər Günü', 1, NULL);
-INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-09-11', N'Azərbaycan Respublikasının Dövlət bayrağı günü', 1, NULL);
+
+
+INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-09-01', N'Azərbaycan Respublikası Parlament seçkiləri günü', 1, 3);
+
+INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-11-08', N'Zəfər Günü', 1, NULL);
+INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-11-09', N'Azərbaycan Respublikasının Dövlət bayrağı günü', 1, NULL);
 INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-11-11', NULL, 3, 1);
+INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-11-12', NULL, 3, NULL);
+INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-11-13', NULL, 3, NULL);
+
+INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-11-16', N'12.11.2024 əvəzi', 5, 1);
+INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-11-23', N'13.11.2024 əvəzi', 5, 1);
+
+
 INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-12-23', N'Bələdiyyə seçkiləri günü', 1, NULL);
 INSERT INTO Holidays (Date, Note, HolidayTypeId, HolidayForShiftId) VALUES ('2024-12-31', N'Dünya azərbaycanlılarının həmrəyliyi günü', 1, NULL);
+
