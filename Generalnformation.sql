@@ -25,3 +25,53 @@ CREATE Table GeneralInformation
 --INSERT INTO GeneralInformation VALUES (N'Mühafizə bölməsinin rəisi - adı (hesabat imza hissəsi üçün)',N'Kamran Tağıyev')
 --INSERT INTO GeneralInformation VALUES (N'Mühafizə bölməsinin rəisi - vəzifə (hesabat imza hissəsi üçün)',N'Mühafizə bölməsinin rəisi')
 
+
+
+--GO
+--CREATE PROC GetGeneralInformation
+--AS
+--BEGIN
+--    SELECT 
+--        Id,
+--        Label,
+--        Text
+--    FROM 
+--        GeneralInformation
+--END
+
+
+--GO
+--CREATE PROC UpdateGeneralInformation
+--    @Id INT,
+--    @Text NVARCHAR(255)
+--AS
+--BEGIN
+--    BEGIN TRY
+--        -- Start a transaction
+--        BEGIN TRANSACTION;
+
+--        -- Update only the Text column
+--        UPDATE GeneralInformation
+--        SET 
+--            Text = @Text
+--        WHERE 
+--            Id = @Id;
+
+--        -- Commit the transaction
+--        COMMIT TRANSACTION;
+--    END TRY
+--    BEGIN CATCH
+--        -- Rollback transaction in case of error
+--        IF @@TRANCOUNT > 0
+--            ROLLBACK TRANSACTION;
+
+--        -- Capture error information
+--        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
+--        DECLARE @ErrorSeverity INT = ERROR_SEVERITY();
+--        DECLARE @ErrorState INT = ERROR_STATE();
+        
+--        -- Raise a new error with the captured information
+--        RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+--    END CATCH
+--END
+

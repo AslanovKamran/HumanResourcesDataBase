@@ -46,3 +46,16 @@ SELECT * FROM Countries ORDER BY Id
 
 --DROP TABLE Temp
 
+
+GO
+CREATE PROC GetCountries
+AS
+BEGIN
+    SET NOCOUNT ON; -- Prevents extra result sets from interfering with SELECT statements
+
+    SELECT
+        [Id],
+        [Name]
+    FROM Countries
+    ORDER BY [Name];
+END
