@@ -477,3 +477,4 @@
 
 
 
+GetStateTablesWithCount @ShowOnlyActive = 1, @Take = 10000
