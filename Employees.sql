@@ -229,7 +229,7 @@ USE SP_HR
 
 
 --GO
---CREATE PROC GetUserGeneralInfo @Id = 10000 INT
+--CREATE PROC GetEmployeeGeneralInfo @Id INT
 --AS
 --BEGIN
 --    SELECT 
@@ -237,7 +237,7 @@ USE SP_HR
 --        Employees.Surname,
 --        Employees.Name,
 --        Employees.FatherName,
-
+--		Employees.PhotoUrl,
 --        Employees.BirthDate,
 --        Nationalities.Name AS [Nationality],
 --        Genders.Type AS [Gender],
@@ -288,7 +288,8 @@ USE SP_HR
 --    LEFT JOIN OrganizationStructures ON OrganizationStructures.Id = StateTables.OrganizationStructureId
 --    WHERE Employees.Id = @Id 
 --END;
---GO
+
+
 
 
 --GO
@@ -419,4 +420,8 @@ USE SP_HR
 
 --        RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
 --    END CATCH
---END; 
+--END;
+
+
+
+

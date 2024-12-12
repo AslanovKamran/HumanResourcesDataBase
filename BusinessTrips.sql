@@ -1,11 +1,11 @@
-GO
+﻿GO
 USE SP_HR
 
-SELECT * FROM BusinessTrips
+
 
 GO 
 CREATE Table BusinessTrips (
-Id INT PRIMARY KEY IDENTITY,
+Id INT PRIMARY KEY,
 Purpose NVARCHAR(255) NOT NULL,
 StartDate DATE NOT NULL,
 EndDate DATE NOT NULL,
@@ -16,6 +16,9 @@ TripCardNumber NVARCHAR(50) NULL,
 OrganizationInCharge NVARCHAR(100) NULL,
 Note NVARCHAR(300) NULL
 )
+
+ALTER TABLE BusinessTrips
+ALTER COLUMN Purpose NVARCHAR(MAX) NULL;
 
 GO 
 CREATE TABLE TripEmployees(
@@ -28,12 +31,11 @@ GO
 CREATE TABLE TripCities(
 Id INT PRIMARY KEY IDENTITY,
 TripId INT FOREIGN KEY REFERENCES  BusinessTrips(Id),
-CityId INT FOREIGN KEY REFERENCES Cities(Id)
+CityId INT FOREIGN KEY REFERENCES Cities(Id),
+DestinationPoint NVARCHAR(255) NULL
 )
 
-GO
-ALTER TABLE TripCities
-ADD DestinationPoint NVARCHAR(255) NULL;
+
 
 GO
 CREATE INDEX IX_TripEmployees_TripId ON TripEmployees(TripId);
@@ -43,8 +45,11 @@ CREATE INDEX IX_Cities_Id ON Cities(Id);
 CREATE INDEX IX_Countries_Id ON Countries(Id);
 
 
+----IDENTITIES NOT SET
+
 GO
 CREATE PROCEDURE AddBusinessTripWithDetails
+	@Id INT,
 	@Purpose NVARCHAR(255),
 	@StartDate DATE,
 	@EndDate DATE,
@@ -66,8 +71,8 @@ BEGIN
         DECLARE @NewTripId INT;
 
         -- Insert the business trip
-        INSERT INTO BusinessTrips (Purpose, StartDate, EndDate, DocumentNumber, DocumentDate, TripCardGivenAt, TripCardNumber, OrganizationInCharge, Note)
-        VALUES (@Purpose, @StartDate, @EndDate, @DocumentNumber, @DocumentDate, @TripCardGivenAt, @TripCardNumber, @OrganizationInCharge, @Note);
+        INSERT INTO BusinessTrips (Id, Purpose, StartDate, EndDate, DocumentNumber, DocumentDate, TripCardGivenAt, TripCardNumber, OrganizationInCharge, Note)
+        VALUES (@Id, @Purpose, @StartDate, @EndDate, @DocumentNumber, @DocumentDate, @TripCardGivenAt, @TripCardNumber, @OrganizationInCharge, @Note);
 
         SET @NewTripId = SCOPE_IDENTITY();
 
@@ -189,22 +194,40 @@ BEGIN
     WHERE TripCities.TripId = @TripId;
 END
 
+
 GO
 CREATE PROC GetBusinessTrips
+    @Skip INT = 0, -- Number of rows to skip (default 0)
+    @Take INT = 20 -- Number of rows to take (default 20)
 AS
 BEGIN
-SELECT 
- BusinessTrips.Id,
- BusinessTrips.DocumentNumber,
- BusinessTrips.DocumentDate,
- BusinessTrips.TripCardGivenAt,
- BusinessTrips.TripCardNumber,
- BusinessTrips.StartDate,
- BusinessTrips.EndDate,
- BusinessTrips.Purpose,
- BusinessTrips.OrganizationInCharge,
- BusinessTrips.Note
- FROM BusinessTrips
- END
+    -- Return the total count of entries
+    SELECT COUNT(*) AS TotalCount FROM BusinessTrips;
 
- --BULK INSERTS NEED TO BE DONE
+    -- Return the paginated data
+    SELECT 
+        BusinessTrips.Id,
+        BusinessTrips.DocumentNumber,
+        BusinessTrips.DocumentDate,
+        BusinessTrips.TripCardGivenAt,
+        BusinessTrips.TripCardNumber,
+        BusinessTrips.StartDate,
+        BusinessTrips.EndDate,
+        BusinessTrips.Purpose,
+        BusinessTrips.OrganizationInCharge,
+        BusinessTrips.Note
+    FROM BusinessTrips
+    ORDER BY BusinessTrips.Id -- Required for OFFSET-FETCH
+    OFFSET @Skip ROWS
+    FETCH NEXT @Take ROWS ONLY;
+END
+
+
+
+
+
+
+
+
+
+
