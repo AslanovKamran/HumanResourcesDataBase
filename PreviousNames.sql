@@ -91,9 +91,10 @@ USE SP_HR
 -- ORDER BY PreviousNames.ChangedAt DESC;
 --END
 
+
+
 --GO
 --CREATE PROC AddPreviousName
---    @Id INT,
 --    @Surname NVARCHAR(50),
 --    @Name NVARCHAR(50),
 --    @FatherName NVARCHAR(50),
@@ -106,8 +107,8 @@ USE SP_HR
 --        BEGIN TRANSACTION;
 
 --        -- Insert the new previous name record
---        INSERT INTO PreviousNames (Id, Surname, Name, FatherName, ChangedAt, EmployeeId)
---        VALUES (@Id, @Surname, @Name, @FatherName, @ChangedAt, @EmployeeId);
+--        INSERT INTO PreviousNames ( Surname, Name, FatherName, ChangedAt, EmployeeId)
+--        VALUES ( @Surname, @Name, @FatherName, @ChangedAt, @EmployeeId);
 
 --        -- Commit the transaction
 --        COMMIT TRANSACTION;

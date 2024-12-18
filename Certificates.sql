@@ -43,7 +43,6 @@
 
 
 --CREATE PROCEDURE AddCertificate
---	@Id INT,
 --    @EmployeeId INT,
 --    @GivenAt DATE,
 --    @Name NVARCHAR(255),
@@ -67,8 +66,8 @@
 --        END
 
 --        -- Insert the new certificate
---        INSERT INTO Certificates (Id, EmployeeId, GivenAt, Name, Organization, ValidUntil)
---        VALUES (@Id, @EmployeeId, @GivenAt, @Name, @Organization, @ValidUntil);
+--        INSERT INTO Certificates (EmployeeId, GivenAt, Name, Organization, ValidUntil)
+--        VALUES (@EmployeeId, @GivenAt, @Name, @Organization, @ValidUntil);
 
 --        -- Commit transaction if everything is successful
 --        COMMIT TRANSACTION;

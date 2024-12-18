@@ -16,6 +16,7 @@ CREATE Table TabelExtraWork
 [ExtraWorkNightHours] INT NULL
 )
 
+SELECT * FROM TabelExtraWork ORDER BY Id DESC
 
 GO
 CREATE PROCEDURE SelectTabelExtraWork
@@ -43,7 +44,7 @@ END;
 
 GO
 CREATE PROCEDURE InsertTabelExtraWork
-    @Id INT,
+  
     @Date DATE,
 	  @EmployeeId INT,
     @ExtraWorkType INT,
@@ -58,7 +59,7 @@ BEGIN
 
     BEGIN TRY
         INSERT INTO TabelExtraWork (
-            [Id], 
+         
             [Date], 
 			  [EmployeeId],
             [ExtraWorkType], 
@@ -70,7 +71,7 @@ BEGIN
             [InsertedDate]
         )
         VALUES (
-            @Id, 
+         
             @Date, 
 			  @EmployeeId,
             @ExtraWorkType, 

@@ -49,7 +49,6 @@ CREATE INDEX IX_Countries_Id ON Countries(Id);
 
 GO
 CREATE PROCEDURE AddBusinessTripWithDetails
-	@Id INT,
 	@Purpose NVARCHAR(255),
 	@StartDate DATE,
 	@EndDate DATE,
@@ -71,8 +70,8 @@ BEGIN
         DECLARE @NewTripId INT;
 
         -- Insert the business trip
-        INSERT INTO BusinessTrips (Id, Purpose, StartDate, EndDate, DocumentNumber, DocumentDate, TripCardGivenAt, TripCardNumber, OrganizationInCharge, Note)
-        VALUES (@Id, @Purpose, @StartDate, @EndDate, @DocumentNumber, @DocumentDate, @TripCardGivenAt, @TripCardNumber, @OrganizationInCharge, @Note);
+        INSERT INTO BusinessTrips ( Purpose, StartDate, EndDate, DocumentNumber, DocumentDate, TripCardGivenAt, TripCardNumber, OrganizationInCharge, Note)
+        VALUES ( @Purpose, @StartDate, @EndDate, @DocumentNumber, @DocumentDate, @TripCardGivenAt, @TripCardNumber, @OrganizationInCharge, @Note);
 
         SET @NewTripId = SCOPE_IDENTITY();
 

@@ -114,7 +114,6 @@ USE SP_HR
 
 --GO
 --CREATE PROCEDURE AddEmloyeesEducation
---    @Id INT,  -- Added Id as an explicit parameter
 --    @EducationTypeId INT,
 --    @Institution NVARCHAR(255),
 --    @Speciality NVARCHAR(255),
@@ -139,7 +138,6 @@ USE SP_HR
 
 --        -- Insert new education record with explicit Id value
 --        INSERT INTO Educations (
---            Id,  -- Explicit Id insertion
 --            EducationTypeId,
 --            Institution,
 --            Speciality,
@@ -151,7 +149,6 @@ USE SP_HR
 --            EmployeeId
 --        )
 --        VALUES (
---            @Id,  -- Explicit Id value
 --            @EducationTypeId,
 --            @Institution,
 --            @Speciality,

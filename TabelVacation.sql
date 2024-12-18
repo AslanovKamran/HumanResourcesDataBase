@@ -18,9 +18,12 @@ CREATE TABLE TabelVacation
 [UpdatedDate] DATE NULL,
 )
 
+
+
+
 GO
 CREATE PROCEDURE InsertTabelVacation
-    @Id INT,
+   
     @BeginDate DATE,
     @EndDate DATE,
     @MainDay INT = NULL,
@@ -34,7 +37,7 @@ BEGIN
     SET NOCOUNT ON;
 
     INSERT INTO TabelVacation (
-        [Id],
+    
         [BeginDate],
         [EndDate],
         [MainDay],
@@ -46,7 +49,7 @@ BEGIN
         [InsertedDate] -- Automatically set to the current date
     )
     VALUES (
-        @Id,
+       
         @BeginDate,
         @EndDate,
         @MainDay,
@@ -59,8 +62,7 @@ BEGIN
     );
 END;
 
-SELECT * FROM TabelVacation WHERE EmployeeId = 12605
-SELECT * FROM Employees WHERE Id = 12605
+
 
 GO
 CREATE PROCEDURE UpdateTabelVacation

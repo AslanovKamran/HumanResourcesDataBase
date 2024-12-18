@@ -93,7 +93,6 @@ JOIN Employees ON Medals.EmployeeId = Employees.Id
 
 --GO
 --CREATE PROC AddMedal
---    @Id INT,
 --    @OrderDate DATE = NULL,
 --    @OrderNumber NVARCHAR(100) = NULL,
 --    @EmployeeId INT,
@@ -106,8 +105,8 @@ JOIN Employees ON Medals.EmployeeId = Employees.Id
 --        BEGIN TRANSACTION;
 
 --        -- Insert the new medal record
---        INSERT INTO Medals (Id, OrderDate, OrderNumber, EmployeeId, Note, MedalTypeId)
---        VALUES (@Id, @OrderDate, @OrderNumber, @EmployeeId, @Note, @MedalTypeId);
+--        INSERT INTO Medals (OrderDate, OrderNumber, EmployeeId, Note, MedalTypeId)
+--        VALUES ( @OrderDate, @OrderNumber, @EmployeeId, @Note, @MedalTypeId);
 
 --        -- Commit the transaction
 --        COMMIT TRANSACTION;

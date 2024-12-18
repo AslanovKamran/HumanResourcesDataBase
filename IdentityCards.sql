@@ -16,8 +16,7 @@ USE SP_HR
 --[PhotoBack] NVARCHAR (255) NULL,
 --)
 
--- BULK INSERT HERE
---!!!!!!!!!!!!!! IDENTITY NOT SET AS THE EMPLOYEES KEEP BEING ADDED !!!!!!!!!!!!!!!!!!!!!
+
 
 --GO
 --CREATE PROC GetIdentityCard @EmployeeId	 INT
@@ -41,7 +40,7 @@ USE SP_HR
 
 --GO
 --CREATE PROC AddIdentityCard
---    @Id INT,
+
 --    @Series NVARCHAR(50),
 --    @CardNumber NVARCHAR(100),
 --    @Organization NVARCHAR(100),
@@ -58,8 +57,8 @@ USE SP_HR
 --        BEGIN TRANSACTION;
 
 --        -- Insert the new identity card record
---        INSERT INTO IdentityCards (Id, Series, CardNumber, Organization, GivenAt, ValidUntil, FinCode, EmployeeId, PhotoFront, PhotoBack)
---        VALUES (@Id, @Series, @CardNumber, @Organization, @GivenAt, @ValidUntil, @FinCode, @EmployeeId, @PhotoFront, @PhotoBack);
+--        INSERT INTO IdentityCards ( Series, CardNumber, Organization, GivenAt, ValidUntil, FinCode, EmployeeId, PhotoFront, PhotoBack)
+--        VALUES ( @Series, @CardNumber, @Organization, @GivenAt, @ValidUntil, @FinCode, @EmployeeId, @PhotoFront, @PhotoBack);
 
 --        -- Commit the transaction
 --        COMMIT TRANSACTION;

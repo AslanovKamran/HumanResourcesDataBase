@@ -109,7 +109,6 @@ USE SP_HR
 
 --GO
 --CREATE PROC AddAward
---    @Id INT,
 --    @OrderDate DATETIME,
 --    @EmployeeId INT,
 --    @Note NVARCHAR(1000),
@@ -123,8 +122,8 @@ USE SP_HR
 --        BEGIN TRANSACTION;
 
 --        -- Insert the new Award record with manually specified Id
---        INSERT INTO Awards (Id, OrderDate, EmployeeId, Note, TypeId, OrderNumber, Amount)
---        VALUES (@Id, @OrderDate, @EmployeeId, @Note, @TypeId, @OrderNumber, @Amount);
+--        INSERT INTO Awards ( OrderDate, EmployeeId, Note, TypeId, OrderNumber, Amount)
+--        VALUES ( @OrderDate, @EmployeeId, @Note, @TypeId, @OrderNumber, @Amount);
 
 --        -- Commit the transaction
 --        COMMIT TRANSACTION;
@@ -171,4 +170,3 @@ USE SP_HR
 --        RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
 --    END CATCH
 --END;
-

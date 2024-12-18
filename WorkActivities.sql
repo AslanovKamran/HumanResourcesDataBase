@@ -1,6 +1,8 @@
 GO
 USE SP_HR
 
+SELECT * FROM WorkActivities ORDER BY Id DESC
+
 --GO
 --CREATE TABLE WorkActivities
 --(
@@ -203,7 +205,7 @@ USE SP_HR
 
 --GO
 --CREATE PROC AddWorkActivity
---    @Id INT,                      -- Manually provided Id
+
 --    @EmployeeId INT,
 --    @WorkActivityTypeId INT,
 --    @WorkActivityDate DATE,
@@ -222,12 +224,12 @@ USE SP_HR
 --    BEGIN TRY
 --        -- Insert new record into WorkActivities table
 --        INSERT INTO WorkActivities (
---            Id, EmployeeId, WorkActivityTypeId, WorkActivityDate, OrderNumber,
+--           EmployeeId, WorkActivityTypeId, WorkActivityDate, OrderNumber,
 --            WorkActivityReason, NewStateTableId, WorkShiftTypeId,
 --            WorkDayOffId, WorkShiftStartedAt, Note, InsertedAt
 --        )
 --        VALUES (
---            @Id, @EmployeeId, @WorkActivityTypeId, @WorkActivityDate, @OrderNumber,
+--           @EmployeeId, @WorkActivityTypeId, @WorkActivityDate, @OrderNumber,
 --            @WorkActivityReason, @NewStateTableId, @WorkShiftTypeId,
 --            @WorkDayOffId, @WorkShiftStartedAt, @Note, GETDATE()
 --        );
@@ -247,6 +249,4 @@ USE SP_HR
 --    END CATCH
 --END
 
-
-
-
+SELECT * FROM WorkNorms

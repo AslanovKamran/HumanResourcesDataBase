@@ -15,9 +15,11 @@ CREATE TABLE TabelAbsent
 [UpdatedDate] DATE NULL
 )
 
+
+
 GO
 CREATE PROCEDURE InsertTabelAbsent
-    @Id INT,
+
     @Date DATE,
     @Cause NVARCHAR(255) = NULL,
     @EmployeeId INT,
@@ -28,8 +30,8 @@ BEGIN
     SET NOCOUNT ON;
 
     BEGIN TRY
-        INSERT INTO TabelAbsent ([Id], [Date], [Cause], [EmployeeId], [Bulletin], [InsertedUser], [InsertedDate])
-        VALUES (@Id, @Date, @Cause, @EmployeeId, @Bulletin, @InsertedUser, GETDATE());
+        INSERT INTO TabelAbsent ([Date], [Cause], [EmployeeId], [Bulletin], [InsertedUser], [InsertedDate])
+        VALUES (@Date, @Cause, @EmployeeId, @Bulletin, @InsertedUser, GETDATE());
     END TRY
     BEGIN CATCH
         -- Handle errors
@@ -40,7 +42,7 @@ BEGIN
     END CATCH
 END;
 
-
+SELECT * FROM TabelAbsent
 
 GO
 CREATE PROCEDURE SelectTabelAbsentByEmployeeAndYear

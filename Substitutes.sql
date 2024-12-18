@@ -75,7 +75,7 @@ END;
 
 GO
 CREATE PROCEDURE InsertSubstitute
-    @Id INT,
+   
     @WhoId INT,
     @WhomId INT,
     @TabelVacationId INT = NULL,
@@ -103,7 +103,7 @@ BEGIN
         END
 
         INSERT INTO Substitutes (
-            [Id],
+          
             [WhoId],
             [WhomId],
             [TabelVacationId],
@@ -115,7 +115,7 @@ BEGIN
             [InsertedDate]
         )
         VALUES (
-            @Id,
+          
             @WhoId,
             @WhomId,
             @TabelVacationId,

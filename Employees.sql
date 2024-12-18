@@ -68,10 +68,13 @@ USE SP_HR
 --)
 
 
+
+
+
 ----IDENTITY IS NOT SET 
 
 --CREATE PROCEDURE AddEmployee
---    @Id INT,
+  
 --    @Surname NVARCHAR(100),
 --    @Name NVARCHAR(100),
 --    @FatherName NVARCHAR(100),
@@ -88,7 +91,7 @@ USE SP_HR
 --    BEGIN TRY
 --        -- Insert the new employee
 --        INSERT INTO Employees (
---            Id, 
+         
 --            Surname, 
 --            Name, 
 --            FatherName, 
@@ -99,7 +102,7 @@ USE SP_HR
 --            PhotoUrl
 --        )
 --        VALUES (
---            @Id, 
+           
 --            @Surname, 
 --            @Name, 
 --            @FatherName, 
@@ -292,6 +295,8 @@ USE SP_HR
 
 
 
+
+
 --GO
 --CREATE PROC UpdateEmployeeGeneralInfo
 --    @Id INT,
@@ -422,6 +427,54 @@ USE SP_HR
 --    END CATCH
 --END;
 
+
+
+--GO
+--CREATE PROC UpdateEmployeesPhotoUrl
+--    @Id INT,
+--    @NewPhotoUrl NVARCHAR(255),
+--    @OldPhotoUrl NVARCHAR(255) OUTPUT
+--AS
+--BEGIN
+--    BEGIN TRY
+--        BEGIN TRANSACTION;
+
+--        -- Check if the employee exists
+--        IF NOT EXISTS (SELECT 1 FROM Employees WHERE Id = @Id)
+--        BEGIN
+--            ROLLBACK TRANSACTION;
+--            RAISERROR('No employee found with the specified Id.', 16, 1);
+--            RETURN;
+--        END
+
+--        -- Get the old PhotoUrl (it may be NULL if not set)
+--        SELECT @OldPhotoUrl = PhotoUrl
+--        FROM Employees
+--        WHERE Id = @Id;
+
+--        -- Update the PhotoUrl
+--        UPDATE Employees
+--        SET PhotoUrl = @NewPhotoUrl
+--        WHERE Id = @Id;
+
+--        -- Commit the transaction
+--        COMMIT TRANSACTION;
+--    END TRY
+--    BEGIN CATCH
+--        -- Rollback transaction in case of an error
+--        IF XACT_STATE() <> 0
+--        BEGIN
+--            ROLLBACK TRANSACTION;
+--        END
+
+--        -- Capture and raise the error
+--        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
+--        DECLARE @ErrorSeverity INT = ERROR_SEVERITY();
+--        DECLARE @ErrorState INT = ERROR_STATE();
+
+--        RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+--    END CATCH
+--END
 
 
 

@@ -47,36 +47,37 @@ USE SP_HR
 --END
 
 
---GO
---CREATE PROC AddVacationType
---    @Id INT,
---    @VacationPaymentTypeId INT,
---    @Name NVARCHAR(255)
---AS
---BEGIN
---    BEGIN TRY
---        -- Start a transaction
---        BEGIN TRANSACTION;
+GO
+CREATE PROC AddVacationType
+ 
+    @VacationPaymentTypeId INT,
+    @Name NVARCHAR(255)
+AS
+BEGIN
+    BEGIN TRY
+        -- Start a transaction
+        BEGIN TRANSACTION;
         
---        -- Insert new vacation type record
---        INSERT INTO VacationTypes (Id, VacationPaymentTypeId, Name)
---        VALUES (@Id, @VacationPaymentTypeId, @Name);
+        -- Insert new vacation type record
+        INSERT INTO VacationTypes (VacationPaymentTypeId, Name)
+        VALUES (@VacationPaymentTypeId, @Name);
 
---        -- Commit transaction
---        COMMIT TRANSACTION;
---    END TRY
---    BEGIN CATCH
---        -- Rollback transaction in case of an error
---        IF @@TRANCOUNT > 0
---            ROLLBACK TRANSACTION;
+        -- Commit transaction
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        -- Rollback transaction in case of an error
+        IF @@TRANCOUNT > 0
+            ROLLBACK TRANSACTION;
         
---        -- Raise the error message
---        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
---        DECLARE @ErrorSeverity INT = ERROR_SEVERITY();
---        DECLARE @ErrorState INT = ERROR_STATE();
---        RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
---    END CATCH
---END
+        -- Raise the error message
+        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
+        DECLARE @ErrorSeverity INT = ERROR_SEVERITY();
+        DECLARE @ErrorState INT = ERROR_STATE();
+        RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+    END CATCH
+END
+
 
 
 --GO

@@ -13,8 +13,8 @@ CREATE TABLE FamilyMembers
 [FatherName]			NVARCHAR(50) NOT NULL
 )
 
---CREATE NONCLUSTERED INDEX IX_FamilyMembers_EmployeeId ON FamilyMembers(EmployeeId);
---CREATE NONCLUSTERED INDEX IX_FamilyMembers_FamilyMemberTypeId ON FamilyMembers(FamilyMemberTypeId);
+CREATE NONCLUSTERED INDEX IX_FamilyMembers_EmployeeId ON FamilyMembers(EmployeeId);
+CREATE NONCLUSTERED INDEX IX_FamilyMembers_FamilyMemberTypeId ON FamilyMembers(FamilyMemberTypeId);
 
 -----Bulk Inert Here 
 
@@ -41,7 +41,6 @@ CREATE TABLE FamilyMembers
 
 --GO
 --CREATE PROC AddFamilyMember
---    @Id INT,
 --    @EmployeeId INT,
 --    @FamilyMemberTypeId INT,
 --    @BirthYear INT,
@@ -55,8 +54,8 @@ CREATE TABLE FamilyMembers
 --        BEGIN TRANSACTION;
 
 --        -- Insert the new family member record
---        INSERT INTO FamilyMembers (Id, EmployeeId, FamilyMemberTypeId, BirthYear, Name, Surname, FatherName)
---        VALUES (@Id, @EmployeeId, @FamilyMemberTypeId, @BirthYear, @Name, @Surname, @FatherName);
+--        INSERT INTO FamilyMembers (EmployeeId, FamilyMemberTypeId, BirthYear, Name, Surname, FatherName)
+--        VALUES (@EmployeeId, @FamilyMemberTypeId, @BirthYear, @Name, @Surname, @FatherName);
 
 --        -- Commit the transaction if successful
 --        COMMIT TRANSACTION;

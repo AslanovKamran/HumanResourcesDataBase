@@ -18,6 +18,9 @@ CREATE TABLE TabelBulletin
 [UpdatedDate] DATE NULL,
 )
 
+
+
+
 -- Proc that gets bulluten by id and date boundary 
 --Id, Serial, Number, Date, [InvalidityBeginDate], [InvalidityEndDate], [InvalidityContinues], [Note]
 
@@ -56,7 +59,7 @@ GO
 
 GO
 CREATE PROCEDURE AddTabelBulletin
-    @Id INT,
+
     @EmployeeId INT,
     @Serial NVARCHAR(20),
     @Number NVARCHAR(20),
@@ -72,7 +75,7 @@ BEGIN
 
     BEGIN TRY
         INSERT INTO TabelBulletin (
-            [Id],
+
             [EmployeeId],
             [Serial],
             [Number],
@@ -85,7 +88,7 @@ BEGIN
             [InsertedDate]
         )
         VALUES (
-            @Id,
+ 
             @EmployeeId,
             @Serial,
             @Number,
@@ -98,8 +101,7 @@ BEGIN
             GETDATE() -- Automatically sets the current date and time
         );
 
-        -- Optionally, return a success message or result
-        PRINT 'Record inserted successfully.';
+     
     END TRY
     BEGIN CATCH
         -- Error handling

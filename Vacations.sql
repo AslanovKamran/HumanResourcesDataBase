@@ -14,7 +14,6 @@ CREATE Table Vacations
 [VacationTypeId] INT FOREIGN KEY REFERENCES VacationTypes(Id)
 )
 
-SELECT * FROM VacationTypes
 
 --BULK
 
@@ -43,42 +42,42 @@ SELECT * FROM VacationTypes
 --    ORDER BY Vacations.YearStarted ASC, Vacations.YearEnded ASC;
 --END
 
-SELECT * FROM Vacations
 
---GO
---CREATE PROC AddVacation 
---    @Id INT,
---    @EmployeeId INT,
---    @DaysWorking INT,
---    @DaysTotal INT,
---    @YearStarted INT,
---    @YearEnded INT,
---    @VacationTypeId INT
---AS
---BEGIN
---    -- Start of error handling and transaction block
---    BEGIN TRY
---        BEGIN TRANSACTION;
 
---        -- Insert statement with specified column names for clarity and robustness
---        INSERT INTO Vacations (Id, EmployeeId, DaysWorking, DaysTotal, YearStarted, YearEnded, VacationTypeId)
---        VALUES (@Id, @EmployeeId, @DaysWorking, @DaysTotal, @YearStarted, @YearEnded, @VacationTypeId);
+GO
+CREATE PROC AddVacation 
+   
+    @EmployeeId INT,
+    @DaysWorking INT,
+    @DaysTotal INT,
+    @YearStarted INT,
+    @YearEnded INT,
+    @VacationTypeId INT
+AS
+BEGIN
+    -- Start of error handling and transaction block
+    BEGIN TRY
+        BEGIN TRANSACTION;
 
---        -- Commit transaction if insert is successful
---        COMMIT TRANSACTION;
---    END TRY
---    BEGIN CATCH
---        -- Rollback transaction if an error occurs
---        IF @@TRANCOUNT > 0
---            ROLLBACK TRANSACTION;
+        -- Insert statement with specified column names for clarity and robustness
+        INSERT INTO Vacations (EmployeeId, DaysWorking, DaysTotal, YearStarted, YearEnded, VacationTypeId)
+        VALUES (@EmployeeId, @DaysWorking, @DaysTotal, @YearStarted, @YearEnded, @VacationTypeId);
 
---        -- Return error message and state
---        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
---        DECLARE @ErrorSeverity INT = ERROR_SEVERITY();
---        DECLARE @ErrorState INT = ERROR_STATE();
---        RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
---    END CATCH
---END;
+        -- Commit transaction if insert is successful
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        -- Rollback transaction if an error occurs
+        IF @@TRANCOUNT > 0
+            ROLLBACK TRANSACTION;
+
+        -- Return error message and state
+        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
+        DECLARE @ErrorSeverity INT = ERROR_SEVERITY();
+        DECLARE @ErrorState INT = ERROR_STATE();
+        RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+    END CATCH
+END;
 
 
 --GO
