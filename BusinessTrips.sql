@@ -20,12 +20,7 @@ Note NVARCHAR(300) NULL
 ALTER TABLE BusinessTrips
 ALTER COLUMN Purpose NVARCHAR(MAX) NULL;
 
-GO 
-CREATE TABLE TripEmployees(
-Id INT PRIMARY KEY IDENTITY,
-TripId INT FOREIGN KEY REFERENCES  BusinessTrips(Id),
-EmployeeId INT FOREIGN KEY REFERENCES Employees(Id)
-)
+ 
 
 GO 
 CREATE TABLE TripCities(
@@ -223,10 +218,302 @@ END
 
 
 
+GO
+CREATE PROCEDURE InsertTripEmployee
+    @TripId INT,
+    @EmployeeId INT
+AS
+BEGIN
+    BEGIN TRY
+        -- Check if the TripId exists in the BusinessTrips table
+        IF NOT EXISTS (
+            SELECT 1
+            FROM BusinessTrips
+            WHERE Id = @TripId
+        )
+        BEGIN
+            THROW 50001, 'TripId does not exist in the BusinessTrips table.', 1;
+        END
+
+        -- Check if the EmployeeId exists in the Employees table
+        IF NOT EXISTS (
+            SELECT 1
+            FROM Employees
+            WHERE Id = @EmployeeId
+        )
+        BEGIN
+            THROW 50002, 'EmployeeId does not exist in the Employees table.', 1;
+        END
+
+        -- Insert the record into TripEmployees
+        INSERT INTO TripEmployees (TripId, EmployeeId)
+        VALUES (@TripId, @EmployeeId);
+    END TRY
+    BEGIN CATCH
+        -- Handle errors
+        DECLARE @ErrorMessage NVARCHAR(4000);
+        DECLARE @ErrorSeverity INT;
+        DECLARE @ErrorState INT;
+
+        SELECT 
+            @ErrorMessage = ERROR_MESSAGE(),
+            @ErrorSeverity = ERROR_SEVERITY(),
+            @ErrorState = ERROR_STATE();
+
+        -- Re-throw the error with additional details
+        RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+    END CATCH
+END;
 
 
 
 
 
+GO
+CREATE PROCEDURE DeleteTripEmployee
+    @Id INT
+AS
+BEGIN
+    BEGIN TRY
+        -- Check if the record with the given Id exists
+        IF NOT EXISTS (
+            SELECT 1
+            FROM TripEmployees
+            WHERE Id = @Id
+        )
+        BEGIN
+            THROW 50003, 'Record with the specified Id does not exist.', 1;
+        END
+
+        -- Delete the record
+        DELETE FROM TripEmployees
+        WHERE Id = @Id;
+    END TRY
+    BEGIN CATCH
+        -- Handle errors
+        DECLARE @ErrorMessage NVARCHAR(4000);
+        DECLARE @ErrorSeverity INT;
+        DECLARE @ErrorState INT;
+
+        SELECT 
+            @ErrorMessage = ERROR_MESSAGE(),
+            @ErrorSeverity = ERROR_SEVERITY(),
+            @ErrorState = ERROR_STATE();
+
+        -- Re-throw the error with additional details
+        RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+    END CATCH
+END;
+
+SELECT * FROM TripCities WHERE TripId = 82
+
+SELECT * FROM Cities
+
+CREATE PROCEDURE InsertTripCity
+    @TripId INT,
+    @CityId INT,
+    @DestinationPoint NVARCHAR(255) = NULL
+AS
+BEGIN
+    BEGIN TRY
+        -- Check if the TripId exists in the BusinessTrips table
+        IF NOT EXISTS (
+            SELECT 1
+            FROM BusinessTrips
+            WHERE Id = @TripId
+        )
+        BEGIN
+            THROW 50001, 'TripId does not exist in the BusinessTrips table.', 1;
+        END
+
+        -- Check if the CityId exists in the Cities table
+        IF NOT EXISTS (
+            SELECT 1
+            FROM Cities
+            WHERE Id = @CityId
+        )
+        BEGIN
+            THROW 50002, 'CityId does not exist in the Cities table.', 1;
+        END
+
+        -- Insert the record into TripCities
+        INSERT INTO TripCities (TripId, CityId, DestinationPoint)
+        VALUES (@TripId, @CityId, @DestinationPoint);
+
+        -- Return success message (optional)
+        PRINT 'Record successfully inserted.';
+    END TRY
+    BEGIN CATCH
+        -- Handle errors
+        DECLARE @ErrorMessage NVARCHAR(4000);
+        DECLARE @ErrorSeverity INT;
+        DECLARE @ErrorState INT;
+
+        SELECT 
+            @ErrorMessage = ERROR_MESSAGE(),
+            @ErrorSeverity = ERROR_SEVERITY(),
+            @ErrorState = ERROR_STATE();
+
+        -- Re-throw the error with additional details
+        RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+    END CATCH
+END;
 
 
+
+
+GO
+CREATE PROCEDURE DeleteTripCity
+    @Id INT
+AS
+BEGIN
+    BEGIN TRY
+        -- Check if the record with the given Id exists
+        IF NOT EXISTS (
+            SELECT 1
+            FROM TripCities
+            WHERE Id = @Id
+        )
+        BEGIN
+            THROW 50003, 'Record with the specified Id does not exist.', 1;
+        END
+
+        -- Delete the record
+        DELETE FROM TripCities
+        WHERE Id = @Id;
+
+        -- Return success message (optional)
+        PRINT 'Record successfully deleted.';
+    END TRY
+    BEGIN CATCH
+        -- Handle errors
+        DECLARE @ErrorMessage NVARCHAR(4000);
+        DECLARE @ErrorSeverity INT;
+        DECLARE @ErrorState INT;
+
+        SELECT 
+            @ErrorMessage = ERROR_MESSAGE(),
+            @ErrorSeverity = ERROR_SEVERITY(),
+            @ErrorState = ERROR_STATE();
+
+        -- Re-throw the error with additional details
+        RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+    END CATCH
+END;
+
+
+
+
+
+GO
+CREATE PROCEDURE UpdateTripCity
+    @Id INT,
+    @CityId INT,
+    @DestinationPoint NVARCHAR(255) = NULL
+AS
+BEGIN
+    BEGIN TRY
+        -- Check if the record with the given Id exists
+        IF NOT EXISTS (
+            SELECT 1
+            FROM TripCities
+            WHERE Id = @Id
+        )
+        BEGIN
+            THROW 50004, 'Record with the specified Id does not exist.', 1;
+        END
+
+        -- Check if the CityId exists in the Cities table
+        IF NOT EXISTS (
+            SELECT 1
+            FROM Cities
+            WHERE Id = @CityId
+        )
+        BEGIN
+            THROW 50005, 'CityId does not exist in the Cities table.', 1;
+        END
+
+        -- Update the record
+        UPDATE TripCities
+        SET
+            CityId = @CityId,
+            DestinationPoint = @DestinationPoint
+        WHERE Id = @Id;
+
+        -- Return success message (optional)
+        PRINT 'Record successfully updated.';
+    END TRY
+    BEGIN CATCH
+        -- Handle errors
+        DECLARE @ErrorMessage NVARCHAR(4000);
+        DECLARE @ErrorSeverity INT;
+        DECLARE @ErrorState INT;
+
+        SELECT 
+            @ErrorMessage = ERROR_MESSAGE(),
+            @ErrorSeverity = ERROR_SEVERITY(),
+            @ErrorState = ERROR_STATE();
+
+        -- Re-throw the error with additional details
+        RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+    END CATCH
+END;
+
+
+GO
+CREATE PROCEDURE UpdateBusinessTrip
+    @Id INT,
+    @Purpose NVARCHAR(255),
+    @StartDate DATE,
+    @EndDate DATE,
+    @DocumentNumber NVARCHAR(50) = NULL,
+    @DocumentDate DATE = NULL,
+    @TripCardGivenAt DATE = NULL,
+    @TripCardNumber NVARCHAR(50) = NULL,
+    @OrganizationInCharge NVARCHAR(100) = NULL,
+    @Note NVARCHAR(300) = NULL
+AS
+BEGIN
+    BEGIN TRY
+        -- Check if the record with the given Id exists
+        IF NOT EXISTS (
+            SELECT 1
+            FROM BusinessTrips
+            WHERE Id = @Id
+        )
+        BEGIN
+            THROW 50006, 'Record with the specified Id does not exist.', 1;
+        END
+
+        -- Update the record
+        UPDATE BusinessTrips
+        SET
+            Purpose = @Purpose,
+            StartDate = @StartDate,
+            EndDate = @EndDate,
+            DocumentNumber = @DocumentNumber,
+            DocumentDate = @DocumentDate,
+            TripCardGivenAt = @TripCardGivenAt,
+            TripCardNumber = @TripCardNumber,
+            OrganizationInCharge = @OrganizationInCharge,
+            Note = @Note
+        WHERE Id = @Id;
+
+        -- Return success message (optional)
+        PRINT 'Record successfully updated.';
+    END TRY
+    BEGIN CATCH
+        -- Handle errors
+        DECLARE @ErrorMessage NVARCHAR(4000);
+        DECLARE @ErrorSeverity INT;
+        DECLARE @ErrorState INT;
+
+        SELECT 
+            @ErrorMessage = ERROR_MESSAGE(),
+            @ErrorSeverity = ERROR_SEVERITY(),
+            @ErrorState = ERROR_STATE();
+
+        -- Re-throw the error with additional details
+        RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+    END CATCH
+END;
