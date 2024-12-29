@@ -16,14 +16,16 @@ CREATE INDEX IX_TabelAbsent_EmployeeId_Date ON TabelAbsent (EmployeeId, Date);
 -- TabelVacation table
 CREATE INDEX IX_TabelVacation_BeginDate_EndDate ON TabelVacation (EmployeeId, BeginDate, EndDate);
 
+SELECT * FROM TabelExtraWork  WHERE EmployeeId = 11652
 
+SELECT * FROM Employees WHERE Name LIKE N'%Ceyhun%' AND Surname LIKE N'%?liyev%'
 
 CREATE INDEX IX_TabelExtraWork_Filtering ON TabelExtraWork (EmployeeId, Date);
 CREATE INDEX IX_TabelBulletin_Filtering ON TabelBulletin (EmployeeId, InvalidityBeginDate, InvalidityEndDate);
 CREATE INDEX IX_TabelAbsent_Filtering ON TabelAbsent (EmployeeId, Date);
 CREATE INDEX IX_TabelVacation_Filtering ON TabelVacation (EmployeeId, BeginDate, EndDate);
 
-
+GetEmployeesWithFullDetails @Year = 2024, @Month = 11,  @OrganizationStructureId = 570
 
 CREATE PROCEDURE GetEmployeesWithFullDetails
     @Year INT,
@@ -112,12 +114,6 @@ BEGIN
     WHERE emp.IsWorking  = 1 AND (@OrganizationStructureId IS NULL OR os.Id = @OrganizationStructureId)-- Filter if parameter is provided
     ORDER BY os.Id ASC, stbl.Degree DESC; -- Order by OrganizationStructureId
 END;
-
-
-
-
-
-
 
 
 
