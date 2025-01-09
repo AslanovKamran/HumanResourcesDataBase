@@ -477,4 +477,74 @@ USE SP_HR
 --END
 
 
+--GO
+--CREATE PROC GetEmployeesGeneralInfo 
+--  @Skip INT = 0,
+--  @Take INT = 10
 
+--AS
+--BEGIN
+--    SET NOCOUNT ON;
+
+--    -- Return the total count of records as the first result set
+--    SELECT COUNT(*) AS TotalCount
+--    FROM Employees;
+
+--    -- Return the paginated data as the second result set
+--    SELECT 
+--        Employees.Id,
+--        Employees.Surname,
+--        Employees.Name,
+--        Employees.FatherName,
+--        Employees.PhotoUrl,
+--        Employees.BirthDate,
+--        Nationalities.Name AS [Nationality],
+--        Genders.Type AS [Gender],
+--        MaritalStatuses.Status AS [MaritalStatus],
+--        Employees.SocialInsuranceNumber,
+--        Employees.TabelNumber,
+--        Employees.AnvisUserId,
+--        Employees.EntryDate,
+
+--        -- Logic for QuitDate
+--        CASE 
+--            WHEN Employees.IsWorking = 1 THEN NULL
+--            ELSE (SELECT TOP 1 WorkActivityDate 
+--                  FROM WorkActivities 
+--                  WHERE EmployeeId = Employees.Id AND WorkActivityTypeId = 3 
+--                  ORDER BY WorkActivityDate DESC)
+--        END AS QuitDate,
+
+--        Employees.TrainershipYear,
+--        Employees.TrainershipMonth,
+--        Employees.TrainershipDay,
+--        Employees.RegistrationAddress,
+--        Employees.LivingAddress,
+--        Employees.MobileNumber,
+--        Employees.MobileNumber2,
+--        Employees.MobileNumber3,
+--        Employees.TelephoneNumber,
+--        Employees.InternalNumber,
+--        Employees.Email,
+--        OrganizationStructures.FullName AS [OrganizationStructureName],
+--        StateTables.Name AS [StateTableName],
+--        StateTables.Degree AS [StateTableDegree],
+--        Employees.IsTradeUnionMember,
+--        Employees.IsVeteran,
+--        Employees.HasWarInjury,
+--        Employees.DisabilityDegree,
+--        Employees.HasDisabledChild,
+--        Employees.IsRefugee,
+--        Employees.IsRefugeeFromAnotherCountry
+
+--    FROM Employees
+--    LEFT JOIN Nationalities ON Nationalities.Id = Employees.NationalityId
+--    LEFT JOIN Genders ON Genders.Id = Employees.GenderId
+--    LEFT JOIN MaritalStatuses ON MaritalStatuses.Id = Employees.MaritalStatusId
+--    LEFT JOIN StateTables ON StateTables.Id = Employees.StateTableId
+--    LEFT JOIN OrganizationStructures ON OrganizationStructures.Id = StateTables.OrganizationStructureId
+
+--    -- Pagination logic
+--    ORDER BY Employees.Id
+--    OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;
+--END;
