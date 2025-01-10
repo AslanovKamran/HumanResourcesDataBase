@@ -38,6 +38,29 @@ CREATE NONCLUSTERED INDEX IX_FamilyMembers_FamilyMemberTypeId ON FamilyMembers(F
 --END
 
 
+CREATE PROC GetAllFamilyMembers 
+AS
+BEGIN
+
+--Getting the total count (First table)
+SELECT COUNT(*) 
+FROM FamilyMembers AS [TotalCount]
+
+--Retrieving the other data (Second table)
+SELECT 
+FamilyMembers.Id,
+FamilyMemberTypes.Type,
+FamilyMembers.BirthYear,
+FamilyMembers.Surname,
+FamilyMembers.Name,
+FamilyMembers.FatherName,
+FamilyMembers.EmployeeId AS [EmployeeId]
+FROM FamilyMembers
+LEFT JOIN FamilyMemberTypes ON FamilyMemberTypes.Id = FamilyMembers.FamilyMemberTypeId
+ORDER BY FamilyMembers.BirthYear ASC
+END
+
+
 
 --GO
 --CREATE PROC AddFamilyMember
