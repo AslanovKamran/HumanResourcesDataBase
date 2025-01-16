@@ -48,6 +48,38 @@ USE SP_HR
 --END
 
 
+
+--GO
+--CREATE PROC GetAllEmployeesEducations 
+-- @Skip INT = 0,		 -- Number of rows to skip
+-- @Take INT = 10   -- Number of rows to take
+-- AS
+--BEGIN
+----Getting the total count (First table)
+--SELECT COUNT(*) 
+--FROM Educations AS [TotalCount]
+
+------Retrieving the other data (Second table)
+--SELECT 
+--edu.Id,
+--et.Type AS [EducationType],
+--edu.Institution, 
+--edu.Speciality,
+--ek.Kind AS [EducationKind],
+--edu.EducationStartedAt,
+--edu.EducationEndedAt,
+--edu.DiplomaNumber,
+--dt.Type AS [DiplomaType], 
+--edu.EmployeeId
+--FROM Educations as edu
+--JOIN DiplomaTypes dt on dt.Id	= edu.DiplomaTypeId
+--JOIN EducationKinds ek on ek.id = edu.EducationKindId
+--JOIN EducationTypes et on et.Id = edu.EducationTypeId
+--ORDER BY edu.EmployeeId ASC
+--OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;
+--END
+
+
 --GO
 --CREATE PROC UpdateEmployeesEducation
 --    @Id INT,
