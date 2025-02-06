@@ -191,8 +191,6 @@ BEGIN
 END;
 
 
-
-
 GO
 CREATE PROCEDURE AssignNewBrigadeToEmployee
     @EmployeeId INT,
@@ -233,6 +231,7 @@ BEGIN
         RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
     END CATCH
 END;
+
 
 
 GO
@@ -288,4 +287,5 @@ JOIN OrganizationStructures as org ON st.OrganizationStructureId = org.Id
 JOIN Brigades as brg ON brg.Id = emp.BrigadeId
 WHERE emp.BrigadeId = @BrigadeId
 END
+
 
